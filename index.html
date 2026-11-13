@@ -96,6 +96,13 @@ textarea{min-height:66px;resize:vertical}
 .seg button.on{background:var(--accent);color:var(--accent-ink)}
 .other{margin-top:6px}
 .small{font-size:13px;color:var(--muted)}
+.fit .id.red{background:#fde8e6;color:#c4120c;outline:2px solid #c4120c}
+.notes p,.notes li{font-size:15px;line-height:1.45;margin:0 0 8px}
+.notes h3{font-size:16px;margin:14px 0 6px}
+.notes table{border-collapse:collapse;font-size:14px;width:100%}
+.notes td,.notes th{border:1px solid var(--line);padding:5px 6px;text-align:left;vertical-align:top}
+.notes ul{padding-left:20px;margin:0 0 8px}
+.hwl{font-size:15px;background:var(--accent-soft);border-radius:8px;padding:8px 10px}
 </style>
 </head>
 <body>
@@ -104,31 +111,26 @@ textarea{min-height:66px;resize:vertical}
 <script>
 (function(){
 "use strict";
-var VERSION="1.0";
-/* ---------------- reference data ---------------- */
+var VERSION="2.0";
+/* ================= reference data ================= */
 var HULLS={"cruiser":{"name":"Transom cruiser","d":"M500,45 C395,95 300,230 268,340 C258,375 255,410 255,470 L255,1230 C255,1268 275,1295 320,1298 L680,1298 C725,1295 745,1268 745,1230 L745,470 C745,410 742,375 732,340 C700,230 605,95 500,45 Z","transom":true},"barge":{"name":"Bluff-ended barge","d":"M479.2,95 L520.8,95 Q652.8,95 652.8,227 L652.8,1293 Q652.8,1405 540.8,1405 L459.2,1405 Q347.2,1405 347.2,1293 L347.2,227 Q347.2,95 479.2,95 Z","transom":true},"double":{"name":"Double-ender","d":"M500,45 C380,110 262,300 258,470 L258,1030 C262,1200 380,1400 500,1455 C620,1400 738,1200 742,1030 L742,470 C738,300 620,110 500,45 Z"},"fine":{"name":"Fine-ended yacht","d":"M500.0,95.0 C500.9,97.3 503.4,104.1 505.2,108.6 C507.1,113.2 509.0,117.7 510.9,122.3 C512.8,126.8 514.8,131.4 516.8,135.9 C518.7,140.5 520.7,145.0 522.7,149.6 C524.7,154.1 526.7,158.7 528.7,163.2 C530.8,167.8 532.8,172.3 534.8,176.9 C536.8,181.4 538.9,186.0 540.9,190.5 C542.9,195.1 544.9,199.6 547.0,204.2 C549.0,208.7 551.0,213.3 553.1,217.8 C555.1,222.4 557.1,226.9 559.1,231.5 C561.2,236.0 563.2,240.6 565.2,245.1 C567.2,249.7 569.2,254.2 571.2,258.8 C573.2,263.3 575.2,267.8 577.2,272.4 C579.1,276.9 581.1,281.5 583.1,286.0 C585.0,290.6 587.0,295.1 588.9,299.7 C590.8,304.2 592.8,308.8 594.7,313.3 C596.6,317.9 598.5,322.4 600.4,327.0 C602.2,331.5 604.1,336.1 606.0,340.6 C607.8,345.2 609.7,349.7 611.5,354.3 C613.3,358.8 615.1,363.4 616.9,367.9 C618.7,372.5 620.4,377.0 622.2,381.6 C623.9,386.1 625.7,390.7 627.4,395.2 C629.1,399.8 630.8,404.3 632.4,408.9 C634.1,413.4 635.7,418.0 637.4,422.5 C639.0,427.0 640.6,431.6 642.2,436.1 C643.7,440.7 645.3,445.2 646.8,449.8 C648.4,454.3 649.9,458.9 651.3,463.4 C652.8,468.0 654.3,472.5 655.7,477.1 C657.1,481.6 658.5,486.2 659.9,490.7 C661.3,495.3 662.6,499.8 663.9,504.4 C665.3,508.9 666.6,513.5 667.8,518.0 C669.1,522.6 670.3,527.1 671.5,531.7 C672.7,536.2 673.9,540.8 675.1,545.3 C676.2,549.9 677.3,554.4 678.4,559.0 C679.5,563.5 680.5,568.1 681.6,572.6 C682.6,577.2 683.6,581.7 684.5,586.3 C685.5,590.8 686.4,595.3 687.3,599.9 C688.2,604.4 689.1,609.0 689.9,613.5 C690.8,618.1 691.6,622.6 692.3,627.2 C693.1,631.7 693.8,636.3 694.5,640.8 C695.2,645.4 695.9,649.9 696.5,654.5 C697.1,659.0 697.7,663.6 698.3,668.1 C698.9,672.7 699.4,677.2 699.9,681.8 C700.4,686.3 700.8,690.9 701.2,695.4 C701.7,700.0 702.1,704.5 702.4,709.1 C702.8,713.6 703.1,718.2 703.3,722.7 C703.6,727.3 703.9,731.8 704.1,736.4 C704.3,740.9 704.5,745.5 704.6,750.0 C704.7,754.5 704.8,759.1 704.9,763.6 C705.0,768.2 705.0,772.7 705.0,777.3 C705.0,781.8 704.9,786.4 704.9,790.9 C704.8,795.5 704.7,800.0 704.5,804.6 C704.4,809.1 704.2,813.7 704.0,818.2 C703.7,822.8 703.5,827.3 703.3,831.9 C703.0,836.4 702.7,841.0 702.4,845.5 C702.1,850.1 701.8,854.6 701.5,859.2 C701.2,863.7 700.8,868.3 700.5,872.8 C700.1,877.4 699.8,881.9 699.4,886.5 C699.1,891.0 698.7,895.6 698.4,900.1 C698.0,904.7 697.7,909.2 697.3,913.8 C696.9,918.3 696.5,922.8 696.1,927.4 C695.6,931.9 695.2,936.5 694.7,941.0 C694.2,945.6 693.7,950.1 693.1,954.7 C692.6,959.2 692.0,963.8 691.4,968.3 C690.9,972.9 690.3,977.4 689.6,982.0 C689.0,986.5 688.4,991.1 687.7,995.6 C687.1,1000.2 686.4,1004.7 685.8,1009.3 C685.1,1013.8 684.4,1018.4 683.7,1022.9 C683.1,1027.5 682.4,1032.0 681.7,1036.6 C681.0,1041.1 680.3,1045.7 679.6,1050.2 C678.9,1054.8 678.1,1059.3 677.4,1063.9 C676.6,1068.4 675.9,1073.0 675.1,1077.5 C674.2,1082.0 673.4,1086.6 672.5,1091.1 C671.7,1095.7 670.8,1100.2 669.8,1104.8 C668.8,1109.3 667.9,1113.9 666.8,1118.4 C665.7,1123.0 664.7,1127.5 663.4,1132.1 C662.2,1136.6 660.9,1141.2 659.4,1145.7 C658.0,1150.3 656.4,1154.8 654.8,1159.4 C653.1,1163.9 651.4,1168.5 649.5,1173.0 C647.7,1177.6 645.8,1182.1 643.9,1186.7 C642.0,1191.2 640.1,1195.8 638.1,1200.3 C636.0,1204.9 634.0,1209.4 631.8,1214.0 C629.6,1218.5 627.3,1223.1 624.9,1227.6 C622.6,1232.2 620.1,1236.7 617.6,1241.3 C615.0,1245.8 612.5,1250.3 609.8,1254.9 C607.1,1259.4 604.4,1264.0 601.6,1268.5 C598.8,1273.1 595.7,1277.6 592.7,1282.2 C589.7,1286.7 586.6,1291.3 583.5,1295.8 C580.4,1300.4 577.4,1304.9 574.2,1309.5 C571.1,1314.0 567.9,1318.6 564.7,1323.1 C561.4,1327.7 558.2,1332.2 554.9,1336.8 C551.6,1341.3 548.4,1345.9 545.1,1350.4 C541.8,1355.0 538.5,1359.5 535.1,1364.1 C531.6,1368.6 528.0,1373.2 524.2,1377.7 C520.4,1382.3 516.2,1386.8 512.2,1391.4 C508.2,1395.9 502.0,1402.7 500.0,1405.0 C498.0,1402.7 491.8,1395.9 487.8,1391.4 C483.8,1386.8 479.6,1382.3 475.8,1377.7 C472.0,1373.2 468.4,1368.6 464.9,1364.1 C461.5,1359.5 458.2,1355.0 454.9,1350.4 C451.6,1345.9 448.4,1341.3 445.1,1336.8 C441.8,1332.2 438.6,1327.7 435.3,1323.1 C432.1,1318.6 428.9,1314.0 425.8,1309.5 C422.6,1304.9 419.6,1300.4 416.5,1295.8 C413.4,1291.3 410.3,1286.7 407.3,1282.2 C404.3,1277.6 401.2,1273.1 398.4,1268.5 C395.6,1264.0 392.9,1259.4 390.2,1254.9 C387.5,1250.3 385.0,1245.8 382.4,1241.3 C379.9,1236.7 377.4,1232.2 375.1,1227.6 C372.7,1223.1 370.4,1218.5 368.2,1214.0 C366.0,1209.4 364.0,1204.9 361.9,1200.3 C359.9,1195.8 358.0,1191.2 356.1,1186.7 C354.2,1182.1 352.3,1177.6 350.5,1173.0 C348.6,1168.5 346.9,1163.9 345.2,1159.4 C343.6,1154.8 342.0,1150.3 340.6,1145.7 C339.1,1141.2 337.8,1136.6 336.6,1132.1 C335.3,1127.5 334.3,1123.0 333.2,1118.4 C332.1,1113.9 331.2,1109.3 330.2,1104.8 C329.2,1100.2 328.3,1095.7 327.5,1091.1 C326.6,1086.6 325.8,1082.0 324.9,1077.5 C324.1,1073.0 323.4,1068.4 322.6,1063.9 C321.9,1059.3 321.1,1054.8 320.4,1050.2 C319.7,1045.7 319.0,1041.1 318.3,1036.6 C317.6,1032.0 316.9,1027.5 316.3,1022.9 C315.6,1018.4 314.9,1013.8 314.2,1009.3 C313.6,1004.7 312.9,1000.2 312.3,995.6 C311.6,991.1 311.0,986.5 310.4,982.0 C309.7,977.4 309.1,972.9 308.6,968.3 C308.0,963.8 307.4,959.2 306.9,954.7 C306.3,950.1 305.8,945.6 305.3,941.0 C304.8,936.5 304.4,931.9 303.9,927.4 C303.5,922.8 303.1,918.3 302.7,913.8 C302.3,909.2 302.0,904.7 301.6,900.1 C301.3,895.6 300.9,891.0 300.6,886.5 C300.2,881.9 299.9,877.4 299.5,872.8 C299.2,868.3 298.8,863.7 298.5,859.2 C298.2,854.6 297.9,850.1 297.6,845.5 C297.3,841.0 297.0,836.4 296.7,831.9 C296.5,827.3 296.3,822.8 296.0,818.2 C295.8,813.7 295.6,809.1 295.5,804.6 C295.3,800.0 295.2,795.5 295.1,790.9 C295.1,786.4 295.0,781.8 295.0,777.3 C295.0,772.7 295.0,768.2 295.1,763.6 C295.2,759.1 295.3,754.5 295.4,750.0 C295.5,745.5 295.7,740.9 295.9,736.4 C296.1,731.8 296.4,727.3 296.7,722.7 C296.9,718.2 297.2,713.6 297.6,709.1 C297.9,704.5 298.3,700.0 298.8,695.4 C299.2,690.9 299.6,686.3 300.1,681.8 C300.6,677.2 301.1,672.7 301.7,668.1 C302.3,663.6 302.9,659.0 303.5,654.5 C304.1,649.9 304.8,645.4 305.5,640.8 C306.2,636.3 306.9,631.7 307.7,627.2 C308.4,622.6 309.2,618.1 310.1,613.5 C310.9,609.0 311.8,604.4 312.7,599.9 C313.6,595.3 314.5,590.8 315.5,586.3 C316.4,581.7 317.4,577.2 318.4,572.6 C319.5,568.1 320.5,563.5 321.6,559.0 C322.7,554.4 323.8,549.9 324.9,545.3 C326.1,540.8 327.3,536.2 328.5,531.7 C329.7,527.1 330.9,522.6 332.2,518.0 C333.4,513.5 334.7,508.9 336.1,504.4 C337.4,499.8 338.7,495.3 340.1,490.7 C341.5,486.2 342.9,481.6 344.3,477.1 C345.7,472.5 347.2,468.0 348.7,463.4 C350.1,458.9 351.6,454.3 353.2,449.8 C354.7,445.2 356.3,440.7 357.8,436.1 C359.4,431.6 361.0,427.0 362.6,422.5 C364.3,418.0 365.9,413.4 367.6,408.9 C369.2,404.3 370.9,399.8 372.6,395.2 C374.3,390.7 376.1,386.1 377.8,381.6 C379.6,377.0 381.3,372.5 383.1,367.9 C384.9,363.4 386.7,358.8 388.5,354.3 C390.3,349.7 392.2,345.2 394.0,340.6 C395.9,336.1 397.8,331.5 399.6,327.0 C401.5,322.4 403.4,317.9 405.3,313.3 C407.2,308.8 409.2,304.2 411.1,299.7 C413.0,295.1 415.0,290.6 416.9,286.0 C418.9,281.5 420.9,276.9 422.8,272.4 C424.8,267.8 426.8,263.3 428.8,258.8 C430.8,254.2 432.8,249.7 434.8,245.1 C436.8,240.6 438.8,236.0 440.9,231.5 C442.9,226.9 444.9,222.4 446.9,217.8 C449.0,213.3 451.0,208.7 453.0,204.2 C455.1,199.6 457.1,195.1 459.1,190.5 C461.1,186.0 463.2,181.4 465.2,176.9 C467.2,172.3 469.2,167.8 471.3,163.2 C473.3,158.7 475.3,154.1 477.3,149.6 C479.3,145.0 481.3,140.5 483.2,135.9 C485.2,131.4 487.2,126.8 489.1,122.3 C491.0,117.7 492.9,113.2 494.8,108.6 C496.6,104.1 499.1,97.3 500.0,95.0 Z"},"full":{"name":"Full-ended yacht","d":"M500.0,95.0 C502.8,96.9 511.5,102.8 516.7,106.7 C522.0,110.6 527.2,114.5 531.5,118.4 C535.8,122.3 539.1,126.2 542.6,130.1 C546.0,134.0 549.0,137.9 552.2,141.8 C555.4,145.7 558.5,149.6 561.5,153.5 C564.6,157.4 567.5,161.3 570.4,165.2 C573.3,169.1 576.2,173.0 578.9,176.9 C581.7,180.8 584.4,184.7 587.0,188.6 C589.6,192.5 592.2,196.4 594.7,200.3 C597.2,204.2 599.7,208.1 602.2,212.0 C604.6,215.9 607.0,219.8 609.4,223.7 C611.8,227.6 614.1,231.5 616.4,235.4 C618.7,239.3 620.9,243.2 623.1,247.1 C625.3,251.0 627.4,254.9 629.5,258.8 C631.5,262.6 633.5,266.5 635.5,270.4 C637.4,274.3 639.2,278.2 641.0,282.1 C642.8,286.0 644.6,289.9 646.3,293.8 C648.0,297.7 649.6,301.6 651.3,305.5 C652.9,309.4 654.5,313.3 656.0,317.2 C657.6,321.1 659.1,325.0 660.6,328.9 C662.1,332.8 663.6,336.7 665.0,340.6 C666.5,344.5 667.9,348.4 669.4,352.3 C670.8,356.2 672.2,360.1 673.6,364.0 C675.1,367.9 676.5,371.8 677.9,375.7 C679.2,379.6 680.6,383.5 682.0,387.4 C683.3,391.3 684.6,395.2 685.9,399.1 C687.2,403.0 688.5,406.9 689.7,410.8 C690.9,414.7 692.1,418.6 693.2,422.5 C694.4,426.4 695.4,430.3 696.5,434.2 C697.6,438.1 698.6,442.0 699.6,445.9 C700.6,449.8 701.6,453.7 702.5,457.6 C703.5,461.5 704.4,465.4 705.3,469.3 C706.2,473.2 707.1,477.1 707.9,481.0 C708.8,484.9 709.6,488.8 710.4,492.7 C711.2,496.6 712.0,500.5 712.8,504.4 C713.6,508.3 714.4,512.2 715.1,516.1 C715.9,520.0 716.6,523.9 717.3,527.8 C718.0,531.7 718.7,535.6 719.4,539.5 C720.1,543.4 720.8,547.3 721.4,551.2 C722.1,555.1 722.7,559.0 723.4,562.9 C724.0,566.8 724.6,570.7 725.2,574.6 C725.8,578.5 726.4,582.4 726.9,586.3 C727.5,590.1 728.1,594.0 728.6,597.9 C729.2,601.8 729.8,605.7 730.4,609.6 C730.9,613.5 731.5,617.4 732.0,621.3 C732.6,625.2 733.1,629.1 733.6,633.0 C734.1,636.9 734.6,640.8 735.0,644.7 C735.5,648.6 735.9,652.5 736.3,656.4 C736.7,660.3 737.0,664.2 737.3,668.1 C737.6,672.0 737.9,675.9 738.2,679.8 C738.5,683.7 738.9,687.6 739.1,691.5 C739.4,695.4 739.7,699.3 740.0,703.2 C740.3,707.1 740.6,711.0 740.8,714.9 C741.0,718.8 741.3,722.7 741.5,726.6 C741.7,730.5 741.8,734.4 742.0,738.3 C742.1,742.2 742.2,746.1 742.3,750.0 C742.3,753.9 742.3,757.8 742.3,761.7 C742.4,765.6 742.3,769.5 742.3,773.4 C742.3,777.3 742.3,781.2 742.3,785.1 C742.2,789.0 742.2,792.9 742.2,796.8 C742.2,800.7 742.1,804.6 742.1,808.5 C742.0,812.4 742.0,816.3 742.0,820.2 C741.9,824.1 741.9,828.0 741.8,831.9 C741.8,835.8 741.7,839.7 741.6,843.6 C741.5,847.5 741.4,851.4 741.3,855.3 C741.2,859.2 741.1,863.1 741.0,867.0 C740.8,870.9 740.7,874.8 740.6,878.7 C740.4,882.6 740.2,886.5 740.1,890.4 C739.9,894.3 739.7,898.2 739.6,902.1 C739.4,906.0 739.2,909.9 739.0,913.8 C738.8,917.6 738.7,921.5 738.5,925.4 C738.2,929.3 738.0,933.2 737.8,937.1 C737.5,941.0 737.3,944.9 737.0,948.8 C736.7,952.7 736.4,956.6 736.1,960.5 C735.8,964.4 735.5,968.3 735.1,972.2 C734.8,976.1 734.4,980.0 734.1,983.9 C733.7,987.8 733.4,991.7 733.0,995.6 C732.6,999.5 732.3,1003.4 731.9,1007.3 C731.5,1011.2 731.1,1015.1 730.7,1019.0 C730.3,1022.9 729.9,1026.8 729.5,1030.7 C729.1,1034.6 728.6,1038.5 728.1,1042.4 C727.7,1046.3 727.2,1050.2 726.7,1054.1 C726.2,1058.0 725.7,1061.9 725.2,1065.8 C724.7,1069.7 724.1,1073.6 723.6,1077.5 C723.0,1081.4 722.5,1085.3 721.9,1089.2 C721.4,1093.1 720.8,1097.0 720.3,1100.9 C719.7,1104.8 719.1,1108.7 718.5,1112.6 C717.8,1116.5 717.2,1120.4 716.6,1124.3 C715.9,1128.2 715.3,1132.1 714.6,1136.0 C713.9,1139.9 713.2,1143.8 712.5,1147.7 C711.7,1151.6 711.0,1155.5 710.2,1159.4 C709.4,1163.3 708.6,1167.2 707.8,1171.1 C706.9,1175.0 706.1,1178.9 705.2,1182.8 C704.3,1186.7 703.3,1190.6 702.4,1194.5 C701.4,1198.4 700.4,1202.3 699.4,1206.2 C698.3,1210.1 697.3,1214.0 696.1,1217.9 C695.0,1221.8 693.9,1225.7 692.7,1229.6 C691.5,1233.5 690.2,1237.4 688.9,1241.3 C687.6,1245.1 686.2,1249.0 684.7,1252.9 C683.2,1256.8 681.7,1260.7 680.1,1264.6 C678.4,1268.5 676.6,1272.4 674.8,1276.3 C672.9,1280.2 671.0,1284.1 669.0,1288.0 C667.0,1291.9 664.9,1295.8 662.6,1299.7 C660.4,1303.6 658.1,1307.5 655.7,1311.4 C653.2,1315.3 650.6,1319.2 647.8,1323.1 C645.1,1327.0 642.2,1330.9 639.1,1334.8 C635.9,1338.7 632.6,1342.6 629.0,1346.5 C625.3,1350.4 621.4,1354.3 617.3,1358.2 C613.2,1362.1 608.9,1366.0 604.1,1369.9 C599.4,1373.8 594.6,1377.7 589.0,1381.6 C583.3,1385.5 577.7,1389.4 570.1,1393.3 C562.6,1397.2 550.8,1401.9 543.6,1405.0 C536.4,1408.1 534.3,1410.2 527.0,1412.0 C519.8,1413.8 509.0,1416.0 500.0,1416.0 C491.0,1416.0 480.2,1413.8 473.0,1412.0 C465.7,1410.2 463.6,1408.1 456.4,1405.0 C449.2,1401.9 437.4,1397.2 429.9,1393.3 C422.3,1389.4 416.7,1385.5 411.0,1381.6 C405.4,1377.7 400.6,1373.8 395.9,1369.9 C391.1,1366.0 386.8,1362.1 382.7,1358.2 C378.6,1354.3 374.7,1350.4 371.0,1346.5 C367.4,1342.6 364.1,1338.7 360.9,1334.8 C357.8,1330.9 354.9,1327.0 352.2,1323.1 C349.4,1319.2 346.8,1315.3 344.3,1311.4 C341.9,1307.5 339.6,1303.6 337.4,1299.7 C335.1,1295.8 333.0,1291.9 331.0,1288.0 C329.0,1284.1 327.1,1280.2 325.2,1276.3 C323.4,1272.4 321.6,1268.5 319.9,1264.6 C318.3,1260.7 316.8,1256.8 315.3,1252.9 C313.8,1249.0 312.4,1245.1 311.1,1241.3 C309.8,1237.4 308.5,1233.5 307.3,1229.6 C306.1,1225.7 305.0,1221.8 303.9,1217.9 C302.7,1214.0 301.7,1210.1 300.6,1206.2 C299.6,1202.3 298.6,1198.4 297.6,1194.5 C296.7,1190.6 295.7,1186.7 294.8,1182.8 C293.9,1178.9 293.1,1175.0 292.2,1171.1 C291.4,1167.2 290.6,1163.3 289.8,1159.4 C289.0,1155.5 288.3,1151.6 287.5,1147.7 C286.8,1143.8 286.1,1139.9 285.4,1136.0 C284.7,1132.1 284.1,1128.2 283.4,1124.3 C282.8,1120.4 282.2,1116.5 281.5,1112.6 C280.9,1108.7 280.3,1104.8 279.7,1100.9 C279.2,1097.0 278.6,1093.1 278.1,1089.2 C277.5,1085.3 277.0,1081.4 276.4,1077.5 C275.9,1073.6 275.3,1069.7 274.8,1065.8 C274.3,1061.9 273.8,1058.0 273.3,1054.1 C272.8,1050.2 272.3,1046.3 271.9,1042.4 C271.4,1038.5 270.9,1034.6 270.5,1030.7 C270.1,1026.8 269.7,1022.9 269.3,1019.0 C268.9,1015.1 268.5,1011.2 268.1,1007.3 C267.7,1003.4 267.4,999.5 267.0,995.6 C266.6,991.7 266.3,987.8 265.9,983.9 C265.6,980.0 265.2,976.1 264.9,972.2 C264.5,968.3 264.2,964.4 263.9,960.5 C263.6,956.6 263.3,952.7 263.0,948.8 C262.7,944.9 262.5,941.0 262.2,937.1 C262.0,933.2 261.8,929.3 261.5,925.4 C261.3,921.5 261.2,917.6 261.0,913.8 C260.8,909.9 260.6,906.0 260.4,902.1 C260.3,898.2 260.1,894.3 259.9,890.4 C259.8,886.5 259.6,882.6 259.4,878.7 C259.3,874.8 259.2,870.9 259.0,867.0 C258.9,863.1 258.8,859.2 258.7,855.3 C258.6,851.4 258.5,847.5 258.4,843.6 C258.3,839.7 258.2,835.8 258.2,831.9 C258.1,828.0 258.1,824.1 258.0,820.2 C258.0,816.3 258.0,812.4 257.9,808.5 C257.9,804.6 257.8,800.7 257.8,796.8 C257.8,792.9 257.8,789.0 257.7,785.1 C257.7,781.2 257.7,777.3 257.7,773.4 C257.7,769.5 257.6,765.6 257.7,761.7 C257.7,757.8 257.7,753.9 257.7,750.0 C257.8,746.1 257.9,742.2 258.0,738.3 C258.2,734.4 258.3,730.5 258.5,726.6 C258.7,722.7 259.0,718.8 259.2,714.9 C259.4,711.0 259.7,707.1 260.0,703.2 C260.3,699.3 260.6,695.4 260.9,691.5 C261.1,687.6 261.5,683.7 261.8,679.8 C262.1,675.9 262.4,672.0 262.7,668.1 C263.0,664.2 263.3,660.3 263.7,656.4 C264.1,652.5 264.5,648.6 265.0,644.7 C265.4,640.8 265.9,636.9 266.4,633.0 C266.9,629.1 267.4,625.2 268.0,621.3 C268.5,617.4 269.1,613.5 269.6,609.6 C270.2,605.7 270.8,601.8 271.4,597.9 C271.9,594.0 272.5,590.1 273.1,586.3 C273.6,582.4 274.2,578.5 274.8,574.6 C275.4,570.7 276.0,566.8 276.6,562.9 C277.3,559.0 277.9,555.1 278.6,551.2 C279.2,547.3 279.9,543.4 280.6,539.5 C281.3,535.6 282.0,531.7 282.7,527.8 C283.4,523.9 284.1,520.0 284.9,516.1 C285.6,512.2 286.4,508.3 287.2,504.4 C288.0,500.5 288.8,496.6 289.6,492.7 C290.4,488.8 291.2,484.9 292.1,481.0 C292.9,477.1 293.8,473.2 294.7,469.3 C295.6,465.4 296.5,461.5 297.5,457.6 C298.4,453.7 299.4,449.8 300.4,445.9 C301.4,442.0 302.4,438.1 303.5,434.2 C304.6,430.3 305.6,426.4 306.8,422.5 C307.9,418.6 309.1,414.7 310.3,410.8 C311.5,406.9 312.8,403.0 314.1,399.1 C315.4,395.2 316.7,391.3 318.0,387.4 C319.4,383.5 320.8,379.6 322.1,375.7 C323.5,371.8 324.9,367.9 326.4,364.0 C327.8,360.1 329.2,356.2 330.6,352.3 C332.1,348.4 333.5,344.5 335.0,340.6 C336.4,336.7 337.9,332.8 339.4,328.9 C340.9,325.0 342.4,321.1 344.0,317.2 C345.5,313.3 347.1,309.4 348.7,305.5 C350.4,301.6 352.0,297.7 353.7,293.8 C355.4,289.9 357.2,286.0 359.0,282.1 C360.8,278.2 362.6,274.3 364.5,270.4 C366.5,266.5 368.5,262.6 370.5,258.8 C372.6,254.9 374.7,251.0 376.9,247.1 C379.1,243.2 381.3,239.3 383.6,235.4 C385.9,231.5 388.2,227.6 390.6,223.7 C393.0,219.8 395.4,215.9 397.8,212.0 C400.3,208.1 402.8,204.2 405.3,200.3 C407.8,196.4 410.4,192.5 413.0,188.6 C415.6,184.7 418.3,180.8 421.1,176.9 C423.8,173.0 426.7,169.1 429.6,165.2 C432.5,161.3 435.4,157.4 438.5,153.5 C441.5,149.6 444.6,145.7 447.8,141.8 C451.0,137.9 454.0,134.0 457.4,130.1 C460.9,126.2 464.2,122.3 468.5,118.4 C472.8,114.5 478.0,110.6 483.3,106.7 C488.5,102.8 497.2,96.9 500.0,95.0 Z"},"sketch":{"name":"Own sketch / photo"}};
 var HULL_ORDER=["cruiser","barge","double","fine","full","sketch"];
 var APPX_ORDER=["fin","long","bilge","aftSkeg","fwdSkeg"];
 var APPX_NAME={fin:"Fin keel",long:"Long keel",bilge:"Bilge / twin keels",aftSkeg:"Aft skeg",fwdSkeg:"Fwd skeg"};
 var APPX_DEFAULT_ON={cruiser:[],barge:["aftSkeg"],double:[],fine:["fin"],full:["long"],sketch:[]};
-var MAT=["Bronze","DZR","Brass","Yellow metal","Marelon","Plastic","Stainless steel","n/a"];
-var LOCS=["Port Bow","Port Forward","Port mid","Port aft","Port quarter","Stbd bow","Stbd forward","Stbd mid","Stbd aft","Stbd quarter","Port transom","Stbd transom"];
 var FIELDS=[
- {k:"location",l:"Location",o:LOCS},
- {k:"compartment",l:"Compartment",o:["Forepeak","Heads","Fwd heads","Aft heads","Galley","Saloon","Engine room","Engine compartment","Aft cabin","Cockpit"]},
- {k:"function",l:"Function",o:["Redundant","Unknown","Galley sink","Bilge pump","Shower","Hand basin","Heads intake","Heads discharge","Fwd heads intake","Fwd heads discharge","Aft heads intake","Aft heads discharge","Paddle log","Depth transducer","Engine intake","Port engine intake","Stbd engine intake"]},
- {k:"skin",l:"Skin fitting",o:["Welded spigot","Yellow metal","Plastic","Chromed","Stainless steel","Painted","Marelon"]},
- {k:"skinMat",l:"Skin fitting material",o:MAT},
+ {k:"compartment",l:"Compartment",o:["Forepeak","Heads","Fwd heads","Aft heads","Toilet compartment","Galley","Saloon","Cockpit","Engine room","Engine compartment","Aft cabin"]},
+ {k:"function",l:"Function",o:["Redundant","Unknown","Galley sink","Bilge pump","Shower","Hand basin","Heads intake","Heads discharge","Fwd heads intake","Fwd heads discharge","Aft heads intake","Aft heads discharge","Paddle log","Depth transducer","Engine intake","Port engine intake","Stbd engine intake","Engine exhaust","Gas locker drain","Cockpit drain"]},
+ {k:"skin",l:"Skin fitting",o:["Welded spigot","Bronze","DZR","Brass","Yellow metal","Stainless steel","Chromed","Painted","Plastic","Marelon"]},
  {k:"valve",l:"Valve",o:["Blakes","Ball","Gate","n/a"]},
- {k:"valveMat",l:"Valve material",o:MAT},
- {k:"hose",l:"Hose",o:["Reinforced","Non reinforced","Not seen"]},
- {k:"clamps",l:"Clamps",o:["Double","Single"]},
- {k:"comment",l:"Comment",o:["Action needed","No defects identified","Not seen internally","Valve seized"]}
+ {k:"valveMat",l:"Valve material",o:["Bronze","DZR","Brass","Yellow metal","Marelon","Plastic","Stainless steel","n/a"]},
+ {k:"hose",l:"Hose",o:["Reinforced","Non reinforced","Pipe","Not seen","n/a"]},
+ {k:"clamps",l:"Clamps",o:["Double","Single","Single T-bolt","Not seen","n/a"]},
+ {k:"comment",l:"Comment",o:["Action needed","No defects identified","Not seen internally","Valve seized","Valve in closed position"]}
 ];
-var WL_TEXT={wl:"Within 250 mm of WL",bw:"Below WL"};
-var KEY_TEXT={wl:"Through-hull aperture within 250 mm of waterline",bw:"Through-hull aperture below waterline"};
+var R0=10, FS0=30; /* marker radius and label size in drawing units (hull frame is 1000 x 1500) */
 
-/* ---------------- storage (IndexedDB, survives app switching) ---------------- */
+/* ================= storage ================= */
 var dbP=new Promise(function(res){
   try{var r=indexedDB.open("throhulls",1);
     r.onupgradeneeded=function(){var d=r.result;if(!d.objectStoreNames.contains("jobs"))d.createObjectStore("jobs");if(!d.objectStoreNames.contains("img"))d.createObjectStore("img")};
@@ -147,15 +149,16 @@ function ls(k,v){try{if(v===undefined)return JSON.parse(localStorage.getItem("th
 function saveUi(){ls("ui",{view:S.view,job:S.job,tab:S.tab})}
 function cfg(){return ls("cfg")||{url:"",key:""}}
 
-/* ---------------- state ---------------- */
-var S={jobs:{},imgs:{},view:"home",job:null,tab:"draw",mode:"",fit:null,arrange:false,vb:{x:0,y:0,w:1000,h:1500},
-  newHull:"cruiser",msg:"",msgErr:false,busy:false,confirmDel:false,confirmFit:false,renumConfirm:false,previewUrl:""};
+/* ================= state ================= */
+var S={jobs:{},imgs:{},view:"home",job:null,tab:"draw",mode:"",fit:null,arrange:false,vb:{x:0,y:0,w:1000,h:1500},ms:1,
+  newHull:"cruiser",newType:"motor",msg:"",msgErr:false,busy:false,confirmDel:false,confirmFit:false,previewUrl:""};
 var app=document.getElementById("app");
 
-/* ---------------- helpers ---------------- */
+/* ================= helpers ================= */
 function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 function today(){var d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
 function ukDate(iso){var p=(iso||"").split("-");return p.length===3?p[2]+"/"+p[1]+"/"+p[0]:iso||""}
+function longDate(iso){var p=(iso||"").split("-");if(p.length!==3)return iso||"";return(+p[2])+" "+["January","February","March","April","May","June","July","August","September","October","November","December"][+p[1]-1]+" "+p[0]}
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
 function letter(i){var s="";i++;while(i>0){var m=(i-1)%26;s=String.fromCharCode(65+m)+s;i=Math.floor((i-1)/26)}return s}
 function letterIndex(s){var n=0;for(var i=0;i<s.length;i++)n=n*26+(s.charCodeAt(i)-64);return n-1}
@@ -163,79 +166,131 @@ function cur(){return S.jobs[S.job]}
 function fits(j){return Object.keys(j.fits).map(function(k){return j.fits[k]})}
 function baseName(j){return (j.vessel||"Unnamed")+" "+j.date+" Thro hulls"}
 function dirty(j){return !j.savedAt||j.updatedAt>j.savedAt}
-var bboxCache={};
-function bbox(h){
-  if(bboxCache[h])return bboxCache[h];
-  if(h==="sketch")return bboxCache[h]={top:45,bot:1455,left:150,right:850};
+function idSort(a,b){if(a.kind!==b.kind)return a.kind==="wl"?-1:1;return a.kind==="wl"?letterIndex(a.id)-letterIndex(b.id):(+a.id)-(+b.id)}
+function sortedFits(j){return fits(j).sort(idSort)}
+var toastT;function toast(m,err){S.msg=m;S.msgErr=!!err;var el=document.getElementById("toast");if(el){el.textContent=m;el.className="msg"+(err?" err":"")}}
+
+/* ---- vessel, beam and heeled waterline ---- */
+function beamM(j){if(j.beamUnit==="m")return +j.beamM||0;var ft=+j.beamFt||0,inch=+j.beamIn||0;return(ft*12+inch)*.0254}
+function heel(j){return j.vtype==="sail"?30:7}
+function hwl(j){var b=beamM(j);if(!b)return null;return Math.round(b/2*Math.tan(heel(j)*Math.PI/180)*1000/5)*5}
+function beamText(j){var b=beamM(j);if(!b)return"";if(j.beamUnit==="m")return(+j.beamM)+" m";return(+j.beamFt||0)+" ft"+(+j.beamIn?" "+(+j.beamIn)+" in":"")+" ("+b.toFixed(2)+" m)"}
+function heelLine(j){var h=hwl(j);if(h==null)return"Beam not entered, so the heeled waterline has not been calculated.";
+  return"Beam "+beamText(j)+". Assumed max heel for "+(j.vtype==="sail"?"sailing boat":"motorboat")+" is "+heel(j)+"°, giving heeled waterline of "+h+" mm."}
+function wlText(f){return f.kind==="bw"?"Below WL":(f.h!=null&&f.h!==""?"+"+f.h+"mm":"")}
+function heeledText(j,f){if(f.kind==="bw")return"Below";var h=hwl(j);if(h==null||f.h==null||f.h==="")return"";return(+f.h)<h?"Below":"Above"}
+function comment(f){return[f.comment,f.note].filter(Boolean).join(" – ")}
+function complete(f){
+  var need=["compartment","function","skin","valve","hose","clamps"];
+  if(need.some(function(k){return !f[k]}))return false;
+  if(f.valve!=="n/a"&&!f.valveMat)return false;
+  if(f.kind==="wl"&&(f.h==null||f.h===""))return false;
+  return true;
+}
+
+/* ---- hull geometry: outline samples, snapping and label layout ---- */
+var geo={};
+function hullGeo(h){
+  if(geo[h])return geo[h];
+  if(!HULLS[h].d)return geo[h]={pts:[],top:45,bot:1455,left:150,right:850,cy:750};
   var m=document.getElementById("measure");m.innerHTML='<path d="'+HULLS[h].d+'"/>';
-  var b=m.firstChild.getBBox();m.innerHTML="";
-  return bboxCache[h]={top:b.y,bot:b.y+b.height,left:b.x,right:b.x+b.width};
+  var p=m.firstChild,L=p.getTotalLength(),pts=[];for(var i=0;i<=700;i++){var q=p.getPointAtLength(L*i/700);pts.push({x:q.x,y:q.y})}
+  var b=p.getBBox();m.innerHTML="";
+  return geo[h]={pts:pts,top:b.y,bot:b.y+b.height,left:b.x,right:b.x+b.width,cy:b.y+b.height/2};
 }
-function side(x){return x<485?0:x>515?2:1}
-function autoLoc(j,x,y){
-  var s=side(x);if(s===1)return"";var sd=s===0?"port":"stbd";var b=bbox(j.hull);var t=(y-b.top)/(b.bot-b.top);
-  var fa=(HULLS[j.hull].transom&&y>b.bot-28)?"transom":t<.12?"bow":t<.35?"forward":t<.65?"mid":t<.88?"aft":"quarter";
-  var want=sd+" "+fa;for(var i=0;i<LOCS.length;i++)if(LOCS[i].toLowerCase()===want)return LOCS[i];return"";
+function placeOf(j,f,R){ /* displayed centre: lettered fittings sit just outside the hull line */
+  var g=hullGeo(j.hull);
+  if(f.kind!=="wl"||!g.pts.length)return{x:f.x,y:f.y,nx:f.x<500?-1:1,ny:0,transom:false};
+  var bi=0,bd=1e12;g.pts.forEach(function(p,i){var d=(p.x-f.x)*(p.x-f.x)+(p.y-f.y)*(p.y-f.y);if(d<bd){bd=d;bi=i}});
+  var a=g.pts[Math.max(0,bi-3)],b=g.pts[Math.min(g.pts.length-1,bi+3)],p=g.pts[bi];
+  var tx=b.x-a.x,ty=b.y-a.y,l=Math.hypot(tx,ty)||1,nx=ty/l,ny=-tx/l;
+  if((p.x-500)*nx+(p.y-g.cy)*ny<0){nx=-nx;ny=-ny}
+  return{x:p.x+nx*(R+3),y:p.y+ny*(R+3),nx:nx,ny:ny,transom:!!HULLS[j.hull].transom&&p.y>g.bot-6&&Math.abs(ny)>.7};
 }
-function nextId(j,kind,except){
-  var used={};fits(j).forEach(function(f){if(f.kind===kind&&f.fid!==except)used[f.id]=1});
-  for(var i=0;i<999;i++){var id=kind==="wl"?letter(i):String(i+1);if(!used[id])return id}
+function layout(j,list,R,FS,label){
+  var g=hullGeo(j.hull),items=list.map(function(f){var p=placeOf(j,f,R);return{f:f,x:p.x,y:p.y,nx:p.nx,ny:p.ny,t:label?label(f):f.id}});
+  var placed=[],circ=items.map(function(it){return{x:it.x,y:it.y,r:R+5}});
+  function rect(cx,cy,t){var w=FS*.62*t.length+FS*.2,h=FS*.82;return{x:cx-w/2,y:cy-h/2,w:w,h:h}}
+  function hit(r){
+    if(g.pts.some(function(p){return p.x>r.x-2&&p.x<r.x+r.w+2&&p.y>r.y-2&&p.y<r.y+r.h+2}))return true;
+    if(placed.some(function(q){return!(r.x+r.w<q.x||q.x+q.w<r.x||r.y+r.h<q.y||q.y+q.h<r.y)}))return true;
+    return circ.some(function(c){var nx=Math.max(r.x,Math.min(c.x,r.x+r.w)),ny=Math.max(r.y,Math.min(c.y,r.y+r.h));return Math.hypot(nx-c.x,ny-c.y)<c.r});
+  }
+  items.forEach(function(it){
+    var base=it.f.kind==="wl"?Math.atan2(it.ny,it.nx):0,best=null;
+    [0,-.6,.6,-1.2,1.2,-1.8,1.8,Math.PI,-2.4,2.4].some(function(da){
+      var a=base+da,dist=R+FS*.5+4+Math.abs(Math.cos(a))*FS*.3*it.t.length,cx=it.x+Math.cos(a)*dist,cy=it.y+Math.sin(a)*dist,r=rect(cx,cy,it.t);
+      if(!best)best={x:cx,y:cy,r:r};if(!hit(r)){best={x:cx,y:cy,r:r};return true}return false});
+    placed.push(best.r);it.lx=best.x;it.ly=best.y;
+  });
+  return items;
 }
-function order(j){
-  var L=[],N=[];fits(j).forEach(function(f){(f.kind==="wl"?L:N).push(f)});
-  var cmp=function(a,b){return side(a.x)-side(b.x)||a.y-b.y};L.sort(cmp);N.sort(cmp);
-  var m={};L.forEach(function(f,i){m[f.fid]=letter(i)});N.forEach(function(f,i){m[f.fid]=String(i+1)});
-  return{L:L,N:N,m:m};
+
+/* ---- numbering ---- */
+function reportOrder(j){
+  var W=[],B=[];fits(j).forEach(function(f){(f.kind==="wl"?W:B).push(f)});
+  var pl={};W.forEach(function(f){pl[f.fid]=placeOf(j,f,R0)});
+  var port=W.filter(function(f){return!pl[f.fid].transom&&f.x<500}).sort(function(a,b){return pl[a.fid].y-pl[b.fid].y}),
+      stbd=W.filter(function(f){return!pl[f.fid].transom&&f.x>=500}).sort(function(a,b){return pl[a.fid].y-pl[b.fid].y}),
+      tran=W.filter(function(f){return pl[f.fid].transom}).sort(function(a,b){return a.x-b.x});
+  B.sort(function(a,b){return a.y-b.y||a.x-b.x});
+  var m={};port.concat(stbd,tran).forEach(function(f,i){m[f.fid]=letter(i)});B.forEach(function(f,i){m[f.fid]=String(i+1)});
+  return m;
 }
-function siteSort(a,b){if(a.kind!==b.kind)return a.kind==="wl"?-1:1;return a.kind==="wl"?letterIndex(a.id)-letterIndex(b.id):(+a.id)-(+b.id)}
-function lcMat(m){if(!m||m==="n/a")return"";if(m===m.toUpperCase()||m==="Marelon")return m;return m.toLowerCase()}
-function withMat(t,m){var a=t&&t!=="n/a"?t:"",b=lcMat(m);return a&&b?a+", "+b:a||b||(t||"")}
-function comment(f){return[f.comment,f.note].filter(Boolean).join("; ")}
+function inOrder(j){var m=reportOrder(j);return fits(j).every(function(f){return m[f.fid]===f.id})}
+function renumber(j){var m=reportOrder(j);fits(j).forEach(function(f){f.id=m[f.fid]});persist(j)}
+function nextId(j,kind,except){var used={};fits(j).forEach(function(f){if(f.kind===kind&&f.fid!==except)used[f.id]=1});
+  for(var i=0;i<999;i++){var id=kind==="wl"?letter(i):String(i+1);if(!used[id])return id}}
 function defaultsAppx(h){
-  var b=bbox(h),L=b.bot-b.top,on=APPX_DEFAULT_ON[h]||[],o={};
+  var b=hullGeo(h),L=b.bot-b.top,on=APPX_DEFAULT_ON[h]||[],o={};
   var p={fin:{y:b.top+.52*L,len:.28*L},long:{y:b.top+.55*L,len:.62*L},bilge:{y:b.top+.55*L,len:.28*L,dx:Math.min(130,(b.right-b.left)*.26)},aftSkeg:{y:b.bot-.11*L,len:.16*L},fwdSkeg:{y:b.top+.14*L,len:.14*L}};
   APPX_ORDER.forEach(function(k){o[k]=Object.assign({on:on.indexOf(k)>=0},p[k])});return o;
 }
-var toastT;function toast(m,err){S.msg=m;S.msgErr=!!err;var el=document.getElementById("toast");if(el){el.textContent=m;el.className="msg"+(err?" err":"");}}
+function migrate(j){
+  if(!j.vtype)j.vtype="motor";if(!j.inspect)j.inspect=400;if(!j.beamUnit)j.beamUnit="ft";if(!j.appx)j.appx=defaultsAppx(j.hull);
+  fits(j).forEach(function(f){if(!f.skin&&f.skinMat)f.skin=f.skinMat;delete f.skinMat;delete f.location;delete f.locAuto});
+  return j;
+}
 
-/* ---------------- SVG drawing (shared by screen and export) ---------------- */
+/* ================= drawing (screen and export share these) ================= */
 function appxSvg(j,interactive){
-  var out="";var A=j.appx||{};
-  APPX_ORDER.forEach(function(k){var a=A[k];if(!a||!a.on)return;var y0=a.y-a.len/2,y1=a.y+a.len/2,sh="";
+  var out="",A=j.appx||{};
+  APPX_ORDER.forEach(function(k){var a=A[k];if(!a||!a.on)return;var y0=a.y-a.len/2,y1=a.y+a.len/2;
     var st='fill="none" stroke="#6b6560" stroke-width="3" stroke-dasharray="12 8"';
-    if(k==="fin")sh='<ellipse cx="500" cy="'+a.y+'" rx="20" ry="'+a.len/2+'" '+st+'/>';
-    else if(k==="long")sh='<rect x="485" y="'+y0+'" width="30" height="'+a.len+'" rx="15" '+st+'/>';
-    else if(k==="bilge")sh='<ellipse cx="'+(500-a.dx)+'" cy="'+a.y+'" rx="13" ry="'+a.len/2+'" '+st+'/><ellipse cx="'+(500+a.dx)+'" cy="'+a.y+'" rx="13" ry="'+a.len/2+'" '+st+'/>';
-    else sh='<rect x="489" y="'+y0+'" width="22" height="'+a.len+'" rx="7" '+st+'/>';
-    out+=sh;
-    if(interactive&&S.arrange){
-      var xs=k==="bilge"?[500-a.dx,500+a.dx]:[500];
+    if(k==="fin")out+='<ellipse cx="500" cy="'+a.y+'" rx="20" ry="'+a.len/2+'" '+st+'/>';
+    else if(k==="long")out+='<rect x="485" y="'+y0+'" width="30" height="'+a.len+'" rx="15" '+st+'/>';
+    else if(k==="bilge")out+='<ellipse cx="'+(500-a.dx)+'" cy="'+a.y+'" rx="13" ry="'+a.len/2+'" '+st+'/><ellipse cx="'+(500+a.dx)+'" cy="'+a.y+'" rx="13" ry="'+a.len/2+'" '+st+'/>';
+    else out+='<rect x="489" y="'+y0+'" width="22" height="'+a.len+'" rx="7" '+st+'/>';
+    if(interactive&&S.arrange){var xs=k==="bilge"?[500-a.dx,500+a.dx]:[500];
       xs.forEach(function(x){out+='<rect data-ap="'+k+'" data-part="body" x="'+(x-34)+'" y="'+y0+'" width="68" height="'+a.len+'" fill="rgba(153,0,0,.08)" stroke="#990000" stroke-width="2"/>'});
-      out+='<circle data-ap="'+k+'" data-part="top" cx="'+xs[xs.length-1]+'" cy="'+y0+'" r="22" fill="#990000"/><circle data-ap="'+k+'" data-part="bot" cx="'+xs[xs.length-1]+'" cy="'+y1+'" r="22" fill="#990000"/>';
-    }
+      out+='<circle data-ap="'+k+'" data-part="top" cx="'+xs[xs.length-1]+'" cy="'+y0+'" r="22" fill="#990000"/><circle data-ap="'+k+'" data-part="bot" cx="'+xs[xs.length-1]+'" cy="'+y1+'" r="22" fill="#990000"/>';}
   });
   return out;
 }
-function markerSvg(f,label,scale){
-  var s=scale||1,x=f.x,y=f.y,r=13*s,sd=side(x);
-  var lx=sd===0?x-r-8*s:x+r+8*s,anchor=sd===0?"end":"start";
-  return '<g data-fid="'+f.fid+'"><circle cx="'+x+'" cy="'+y+'" r="'+(34*s)+'" fill="transparent"/>'+
-    '<path d="M'+(x-r)+','+(y-r)+'L'+(x+r)+','+(y+r)+'M'+(x+r)+','+(y-r)+'L'+(x-r)+','+(y+r)+'" stroke="'+(f.kind==="wl"?"#990000":"#22201b")+'" stroke-width="'+(4.5*s)+'" stroke-linecap="round"/>'+
-    '<text x="'+lx+'" y="'+(y+11*s)+'" text-anchor="'+anchor+'" font-family="Gill Sans,Gill Sans MT,Calibri,sans-serif" font-weight="700" font-size="'+(34*s)+'" fill="'+(f.kind==="wl"?"#990000":"#22201b")+'" stroke="#fff" stroke-width="'+(8*s)+'" paint-order="stroke">'+esc(label)+'</text></g>';
-}
+var GILL='font-family="Gill Sans,Gill Sans MT,Calibri,Carlito,sans-serif"';
 function frameSvg(j){
-  var h=HULLS[j.hull];var o="";
-  if(h&&h.d)o+='<path d="'+h.d+'" fill="none" stroke="#22201b" stroke-width="3"/>';
-  o+='<line x1="500" y1="22" x2="500" y2="1440" stroke="#22201b" stroke-width="1.6" stroke-dasharray="11 9" opacity=".5"/>';
-  o+='<text x="372" y="40" text-anchor="end" font-family="Gill Sans,Gill Sans MT,Calibri,sans-serif" font-size="26" letter-spacing="3" fill="#8a8580">PORT</text>';
-  o+='<text x="628" y="40" font-family="Gill Sans,Gill Sans MT,Calibri,sans-serif" font-size="26" letter-spacing="3" fill="#8a8580">STBD</text>';
-  o+='<text x="500" y="1478" text-anchor="middle" font-family="Perpetua,Palatino,Georgia,serif" font-style="italic" font-size="32" fill="#8a8580">CL</text>';
+  var g=hullGeo(j.hull),h=HULLS[j.hull],o="";
+  if(h.d)o+='<path d="'+h.d+'" fill="none" stroke="#000" stroke-width="3.2"/>';
+  o+='<line x1="500" y1="'+(g.top-35)+'" x2="500" y2="'+(g.bot+70)+'" stroke="#000" stroke-width="1.6" stroke-dasharray="11 9" opacity=".45"/>';
+  o+='<text x="372" y="'+(g.top-20)+'" text-anchor="end" '+GILL+' font-size="30" letter-spacing="4" fill="#777">PORT</text>';
+  o+='<text x="628" y="'+(g.top-20)+'" '+GILL+' font-size="30" letter-spacing="4" fill="#777">STBD</text>';
+  o+='<text x="500" y="'+(g.bot+108)+'" text-anchor="middle" font-family="Times New Roman,Georgia,serif" font-style="italic" font-size="36" fill="#777">CL</text>';
+  return o;
+}
+function markersSvg(j,R,FS,colour,interactive){
+  var o="";
+  layout(j,fits(j),R,FS).forEach(function(it){
+    var c=colour?(complete(it.f)?"#000":"#c4120c"):"#000";
+    o+='<g'+(interactive?' data-fid="'+it.f.fid+'"':'')+'>'+(interactive?'<circle cx="'+it.x+'" cy="'+it.y+'" r="'+(R*3.2)+'" fill="transparent"/>':'')+
+      '<circle cx="'+it.x+'" cy="'+it.y+'" r="'+R+'" fill="#fff" stroke="'+c+'" stroke-width="'+(R/2)+'"/>'+
+      '<text x="'+it.lx+'" y="'+(it.ly+FS*.36)+'" text-anchor="middle" '+GILL+' font-weight="700" font-size="'+FS+'" fill="'+c+'">'+esc(it.t)+'</text></g>';
+  });
   return o;
 }
 
-/* ---------------- views ---------------- */
+/* ================= views ================= */
 function render(){
-  if(S.view==="job"&&cur())renderJob();else{S.view="home";renderHome()}
+  if(S.view==="job"&&cur())renderJob();else if(S.view==="notes")renderNotes();else{S.view="home";renderHome()}
   if(S.fit&&cur()&&cur().fits[S.fit])renderSheet();else{S.fit=null;closeSheet()}
   saveUi();
 }
@@ -243,10 +298,27 @@ function hullThumb(h){
   if(h==="sketch")return '<svg viewBox="0 0 1000 1500"><rect x="180" y="200" width="640" height="1100" rx="30" fill="none" stroke="currentColor" stroke-width="40" stroke-dasharray="70 50"/><path d="M420 760h160M500 680v160" stroke="currentColor" stroke-width="40"/></svg>';
   return '<svg viewBox="0 0 1000 1500"><path d="'+HULLS[h].d+'" fill="none" stroke="currentColor" stroke-width="34"/></svg>';
 }
+function beamFields(j,pre){
+  var u=j?j.beamUnit:"ft";
+  return '<div class="row2"><label class="f">Vessel type<select id="'+pre+'type"><option value="motor"'+((j?j.vtype:S.newType)==="motor"?" selected":"")+'>Motorboat</option><option value="sail"'+((j?j.vtype:S.newType)==="sail"?" selected":"")+'>Sailing boat</option></select></label>'+
+    '<label class="f">Beam in<select id="'+pre+'unit"><option value="ft"'+(u==="ft"?" selected":"")+'>feet and inches</option><option value="m"'+(u==="m"?" selected":"")+'>metres</option></select></label></div>'+
+    '<div class="row2" id="'+pre+'ftrow"'+(u==="ft"?"":" hidden")+'><label class="f">Beam, feet<input id="'+pre+'ft" type="number" inputmode="decimal" min="0" value="'+esc(j?j.beamFt:"")+'"></label><label class="f">inches<input id="'+pre+'in" type="number" inputmode="decimal" min="0" max="11" value="'+esc(j?j.beamIn:"")+'"></label></div>'+
+    '<label class="f" id="'+pre+'mrow"'+(u==="m"?"":" hidden")+'>Beam, metres<input id="'+pre+'m" type="number" inputmode="decimal" step="0.01" min="0" value="'+esc(j?j.beamM:"")+'"></label>';
+}
+function readBeam(pre,o){
+  o.vtype=document.getElementById(pre+"type").value;o.beamUnit=document.getElementById(pre+"unit").value;
+  o.beamFt=document.getElementById(pre+"ft").value;o.beamIn=document.getElementById(pre+"in").value;o.beamM=document.getElementById(pre+"m").value;return o;
+}
+function bindBeam(pre,onchange){
+  var u=document.getElementById(pre+"unit");
+  u.onchange=function(){document.getElementById(pre+"ftrow").hidden=u.value!=="ft";document.getElementById(pre+"mrow").hidden=u.value!=="m";if(onchange)onchange()};
+  if(onchange)["type","ft","in","m"].forEach(function(k){document.getElementById(pre+k).onchange=onchange});
+}
 function renderHome(){
   var list=Object.keys(S.jobs).map(function(k){return S.jobs[k]}).sort(function(a,b){return(b.date+b.created).localeCompare(a.date+a.created)});
-  var h='<header class="bar"><h1>Thro Hulls<small>Through-hull apertures</small></h1><button class="btn ghost" id="settings">Settings</button></header><main>';
+  var h='<header class="bar"><h1>Thro Hulls<small>Through-hull apertures</small></h1><button class="btn ghost" id="notes">Notes</button><button class="btn ghost" id="settings">Settings</button></header><main>';
   h+='<section><h2>New job</h2><form class="panel" id="newf"><div class="row2"><label class="f">Vessel<input id="nv" autocomplete="off" autocapitalize="words" required></label><label class="f">Survey date<input id="nd" type="date" value="'+today()+'" required></label></div>';
+  h+=beamFields(null,"n");
   h+='<div><div class="small" style="margin-bottom:6px;font-weight:600">Hull form</div><div class="hulls">';
   HULL_ORDER.forEach(function(k){h+='<button type="button" class="hull'+(S.newHull===k?" on":"")+'" data-hull="'+k+'">'+hullThumb(k)+'<span>'+HULLS[k].name+'</span></button>'});
   h+='</div></div><button class="btn primary" type="submit">Start job</button></form></section>';
@@ -256,68 +328,73 @@ function renderHome(){
     h+='<li><button class="item" data-open="'+j.id+'"><span class="t"><b>'+esc(j.vessel)+'</b><span>'+ukDate(j.date)+' · '+esc(HULLS[j.hull].name)+' · '+n+' fitting'+(n===1?"":"s")+'</span></span>'+(dirty(j)?'<span class="pill warn">Not on Drive</span>':'<span class="pill ok">On Drive</span>')+'</button></li>'});h+='</ul>'}
   h+='</section><p class="small" style="text-align:center">Version '+VERSION+'</p></main>';
   app.innerHTML=h;
+  bindBeam("n");
   app.querySelectorAll("[data-hull]").forEach(function(b){b.onclick=function(){S.newHull=b.dataset.hull;app.querySelectorAll("[data-hull]").forEach(function(x){x.classList.toggle("on",x===b)})}});
   document.getElementById("newf").onsubmit=function(e){e.preventDefault();var v=document.getElementById("nv").value.trim();if(!v)return;
-    var id=uid();var j={id:id,vessel:v,date:document.getElementById("nd").value||today(),hull:S.newHull,fits:{},appx:defaultsAppx(S.newHull),created:Date.now(),updatedAt:Date.now(),savedAt:0};
-    S.jobs[id]=j;persist(j);flush(id);open(id,"draw")};
+    var id=uid();var j=readBeam("n",{id:id,vessel:v,date:document.getElementById("nd").value||today(),hull:S.newHull,inspect:400,fits:{},appx:defaultsAppx(S.newHull),created:Date.now(),updatedAt:Date.now(),savedAt:0});
+    S.newType=j.vtype;S.jobs[id]=j;persist(j);flush(id);open(id,"draw")};
   app.querySelectorAll("[data-open]").forEach(function(b){b.onclick=function(){open(b.dataset.open,"draw")}});
   document.getElementById("settings").onclick=renderSettings;
+  document.getElementById("notes").onclick=function(){S.view="notes";render();window.scrollTo(0,0)};
 }
-function open(id,tab){S.view="job";S.job=id;S.tab=tab||"draw";S.mode="";S.arrange=false;S.vb={x:0,y:0,w:1000,h:1500};S.msg="";S.confirmDel=false;S.renumConfirm=false;
+function open(id,tab){S.view="job";S.job=id;S.tab=tab||"draw";S.mode="";S.arrange=false;S.vb={x:0,y:0,w:1000,h:1500};S.msg="";S.confirmDel=false;
   var j=cur();if(j&&j.hull==="sketch"&&!S.imgs[id])idb("img","readonly",function(s){return s.get(id)}).then(function(u){if(u){S.imgs[id]=u;render()}});
   render();window.scrollTo(0,0)}
 function renderSettings(){
   var c=cfg();
   app.innerHTML='<header class="bar"><button class="btn ghost" id="back">‹ Jobs</button><h1>Settings</h1></header><main><form class="panel" id="cf">'+
-  '<label class="f">Apps Script web app URL<input id="cu" value="'+esc(c.url)+'" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="https://script.google.com/macros/s/…/exec"></label>'+
-  '<label class="f">App key<input id="ck" value="'+esc(c.key)+'" autocomplete="off" autocapitalize="off" spellcheck="false"></label>'+
+  '<label class="f">Apps Script web app URL<input id="cu" value="'+esc(c.url)+'" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="https://script.google.com/macros/s/…/exec"></label>'+
+  '<label class="f">App key<input id="ck" value="'+esc(c.key)+'" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"></label>'+
   '<div style="display:flex;gap:10px"><button class="btn primary" type="submit" style="flex:1">Save</button><button class="btn" type="button" id="test" style="flex:1">Test connection</button></div><p class="msg" id="toast"></p></form></main>';
   document.getElementById("back").onclick=function(){S.view="home";render()};
   document.getElementById("cf").onsubmit=function(e){e.preventDefault();ls("cfg",{url:document.getElementById("cu").value.trim(),key:document.getElementById("ck").value.trim()});toast("Saved.")};
   document.getElementById("test").onclick=function(){var u=document.getElementById("cu").value.trim();if(!u){toast("Enter the URL first.",true);return}toast("Testing…");
     fetch(u+(u.indexOf("?")<0?"?":"&")+"key="+encodeURIComponent(document.getElementById("ck").value.trim())).then(function(r){return r.json()}).then(function(d){toast(d.ok?"Connected to Drive.":"Reached the script, but: "+(d.error||"unknown error"),!d.ok)}).catch(function(){toast("Couldn't reach the script. Check the URL and your signal.",true)})};
 }
+function renderNotes(){
+  app.innerHTML='<header class="bar"><button class="btn ghost" id="back">‹ Back</button><h1>Notes<small>Through-hull apertures and the standards</small></h1></header><main class="notes">'+NOTES+'</main>';
+  document.getElementById("back").onclick=function(){S.view=S.job&&cur()?"job":"home";render();window.scrollTo(0,0)};
+}
 function renderJob(){
   var j=cur();
-  var h='<div class="head"><header class="bar"><button class="btn ghost" id="back">‹ Jobs</button><h1>'+esc(j.vessel)+'<small>'+ukDate(j.date)+' · '+esc(HULLS[j.hull].name)+'</small></h1></header>';
+  var h='<div class="head"><header class="bar"><button class="btn ghost" id="back">‹ Jobs</button><h1>'+esc(j.vessel)+'<small>'+ukDate(j.date)+' · '+esc(HULLS[j.hull].name)+'</small></h1><button class="btn ghost" id="notes">Notes</button></header>';
   h+='<nav class="tabs">'+[["draw","Drawing"],["table","Table"],["out","Output"]].map(function(t){return'<button data-tab="'+t[0]+'" class="'+(S.tab===t[0]?"on":"")+'">'+t[1]+'</button>'}).join("")+'</nav></div>';
   if(S.tab==="draw")h+=drawHtml(j);else if(S.tab==="table")h+=tableHtml(j);else h+=outHtml(j);
   app.innerHTML=h;
   document.body.style.overflow=S.tab==="draw"?"hidden":"";
   document.getElementById("back").onclick=function(){flushAll();S.view="home";S.job=null;document.body.style.overflow="";render();window.scrollTo(0,0)};
+  document.getElementById("notes").onclick=function(){S.view="notes";document.body.style.overflow="";render();window.scrollTo(0,0)};
   app.querySelectorAll("[data-tab]").forEach(function(b){b.onclick=function(){S.tab=b.dataset.tab;S.mode="";S.arrange=false;S.msg="";render();window.scrollTo(0,0)}});
   if(S.tab==="draw")bindDraw(j);else if(S.tab==="table")bindTable(j);else bindOut(j);
 }
 
 /* ---- drawing tab ---- */
 function drawHtml(j){
-  var h='<div class="draw" id="draw"><div class="stage" id="stage"><svg id="svg" viewBox="'+[S.vb.x,S.vb.y,S.vb.w,S.vb.h].join(" ")+'" preserveAspectRatio="xMidYMid meet">'+drawInner(j)+'</svg>';
-  var hint=S.mode==="wl"?"Tap the hull: within 250 mm of WL":S.mode==="bw"?"Tap the hull: below WL":S.arrange?"Drag keels and skegs; red dots stretch them":"";
+  var h='<div class="draw" id="draw"><div class="stage" id="stage"><svg id="svg" viewBox="'+[S.vb.x,S.vb.y,S.vb.w,S.vb.h].join(" ")+'" preserveAspectRatio="xMidYMid meet"></svg>';
+  var hint=S.mode==="wl"?"Tap the hull: within "+j.inspect+" mm of WL":S.mode==="bw"?"Tap the hull: below WL":S.arrange?"Drag keels and skegs; red dots stretch them":"";
   if(hint)h+='<div class="hint">'+hint+'</div>';
   h+='<div class="zoom"><button class="btn" id="zin" aria-label="Zoom in">+</button><button class="btn" id="zout" aria-label="Zoom out">−</button></div></div>';
   if(S.arrange){h+='<div class="appx"><p>Show on drawing</p>';APPX_ORDER.forEach(function(k){h+='<button class="btn'+(j.appx[k].on?" on":"")+'" data-ax="'+k+'">'+APPX_NAME[k]+'</button>'});h+='</div>'}
   else if(j.hull==="sketch"){h+='<div class="appx"><p>'+(S.imgs[j.id]?"Your sketch is under the drawing.":"Add a photo of your sketch or a plan to draw over.")+'</p><label class="btn" style="flex:1;text-align:center">'+(S.imgs[j.id]?"Replace photo":"Add photo")+'<input type="file" accept="image/*" id="photo" hidden></label>'+(S.imgs[j.id]?'<button class="btn" id="rmphoto" style="flex:1">Remove photo</button>':'')+'</div>'}
-  h+='<div class="tools"><button class="btn'+(S.mode==="wl"?" on":"")+'" id="addwl">+ A  (≤250 mm WL)</button><button class="btn'+(S.mode==="bw"?" on":"")+'" id="addbw">+ 1  (below WL)</button><button class="btn'+(S.arrange?" on":"")+'" id="arr">Keels</button></div></div>';
+  h+='<div class="tools"><button class="btn'+(S.mode==="wl"?" on":"")+'" id="addwl">+ A  (≤'+j.inspect+' mm)</button><button class="btn'+(S.mode==="bw"?" on":"")+'" id="addbw">+ 1  (below WL)</button><button class="btn'+(S.arrange?" on":"")+'" id="arr">Keels</button></div></div>';
   return h;
 }
 function drawInner(j){
   var o='<rect x="-2000" y="-2000" width="5000" height="5500" fill="#fff"/>';
   if(j.hull==="sketch"&&S.imgs[j.id])o+='<image href="'+S.imgs[j.id]+'" x="0" y="0" width="1000" height="1500" preserveAspectRatio="xMidYMid meet" opacity=".85"/>';
-  o+=frameSvg(j)+appxSvg(j,true);
-  fits(j).forEach(function(f){o+=markerSvg(f,f.id,S.ms||1)});
-  return o;
+  return o+frameSvg(j)+appxSvg(j,true)+markersSvg(j,R0*S.ms,FS0*S.ms,true,true);
 }
-function calcMs(){var s=document.getElementById("svg");if(!s)return;var r=s.getBoundingClientRect();if(!r.width)return;var ppu=Math.min(r.width/S.vb.w,r.height/S.vb.h);S.ms=Math.max(.6,Math.min(3,(15/34)/ppu))}
+function calcMs(){var s=document.getElementById("svg");if(!s)return;var r=s.getBoundingClientRect();if(!r.width)return;var ppu=Math.min(r.width/S.vb.w,r.height/S.vb.h);S.ms=Math.max(.6,Math.min(3,(14/FS0)/ppu))}
 function redrawSvg(j){calcMs();var s=document.getElementById("svg");if(s){s.innerHTML=drawInner(j);s.setAttribute("viewBox",[S.vb.x,S.vb.y,S.vb.w,S.vb.h].join(" "))}}
 function svgPt(svg,e){var p=svg.createSVGPoint();p.x=e.clientX;p.y=e.clientY;return p.matrixTransform(svg.getScreenCTM().inverse())}
 function clampVb(){var v=S.vb;v.w=Math.max(250,Math.min(1000,v.w));v.h=v.w*1.5;v.x=Math.max(0,Math.min(1000-v.w,v.x));v.y=Math.max(0,Math.min(1500-v.h,v.y))}
-function zoom(f,cx,cy){var v=S.vb;if(cx==null){cx=v.x+v.w/2;cy=v.y+v.h/2}var nw=v.w*f;v.x=cx-(cx-v.x)*nw/v.w;v.y=cy-(cy-v.y)*nw/v.w;v.w=nw;clampVb();redrawSvg(cur())}
+function zoom(f){var v=S.vb,cx=v.x+v.w/2,cy=v.y+v.h/2,nw=v.w*f;v.x=cx-(cx-v.x)*nw/v.w;v.y=cy-(cy-v.y)*nw/v.w;v.w=nw;clampVb();redrawSvg(cur())}
 function bindDraw(j){
   var svg=document.getElementById("svg"),tb=app.querySelector(".tabs");if(tb)document.getElementById("draw").style.top=Math.round(tb.getBoundingClientRect().bottom)+"px";
+  redrawSvg(j);
   document.getElementById("addwl").onclick=function(){S.mode=S.mode==="wl"?"":"wl";S.arrange=false;render()};
   document.getElementById("addbw").onclick=function(){S.mode=S.mode==="bw"?"":"bw";S.arrange=false;render()};
   document.getElementById("arr").onclick=function(){S.arrange=!S.arrange;S.mode="";render()};
-  redrawSvg(j);
   document.getElementById("zin").onclick=function(){zoom(.6)};
   document.getElementById("zout").onclick=function(){zoom(1/.6)};
   app.querySelectorAll("[data-ax]").forEach(function(b){b.onclick=function(){var a=j.appx[b.dataset.ax];a.on=!a.on;persist(j);render()}});
@@ -326,15 +403,15 @@ function bindDraw(j){
   var drag=null;
   svg.addEventListener("pointerdown",function(e){
     var p=svgPt(svg,e),t=e.target,g=t.closest("[data-fid]"),ap=t.getAttribute("data-ap");
-    if(S.arrange&&ap){var a=j.appx[ap];drag={type:"ap",k:ap,part:t.getAttribute("data-part"),p0:p,a0:JSON.parse(JSON.stringify(a)),moved:false}}
-    else if(g&&!S.arrange){var f=j.fits[g.dataset.fid];drag={type:"fit",f:f,p0:p,x0:f.x,y0:f.y,sx:e.clientX,sy:e.clientY,moved:false}}
+    if(S.arrange&&ap){drag={type:"ap",k:ap,part:t.getAttribute("data-part"),p0:p,a0:JSON.parse(JSON.stringify(j.appx[ap])),moved:false}}
+    else if(g&&!S.arrange&&!S.mode){var f=j.fits[g.dataset.fid];drag={type:"fit",f:f,p0:p,x0:f.x,y0:f.y,sx:e.clientX,sy:e.clientY,moved:false}}
     else drag={type:"bg",p0:p,vb0:Object.assign({},S.vb),sx:e.clientX,sy:e.clientY,moved:false};
     svg.setPointerCapture(e.pointerId);e.preventDefault();
   });
   svg.addEventListener("pointermove",function(e){
     if(!drag)return;var p=svgPt(svg,e);
     if(drag.type==="fit"){if(!drag.moved&&Math.hypot(e.clientX-drag.sx,e.clientY-drag.sy)<8)return;drag.moved=true;
-      var f=drag.f;f.x=Math.max(0,Math.min(1000,drag.x0+p.x-drag.p0.x));f.y=Math.max(0,Math.min(1500,drag.y0+p.y-drag.p0.y));redrawSvg(j)}
+      drag.f.x=Math.max(0,Math.min(1000,drag.x0+p.x-drag.p0.x));drag.f.y=Math.max(0,Math.min(1500,drag.y0+p.y-drag.p0.y));redrawSvg(j)}
     else if(drag.type==="ap"){drag.moved=true;var a=j.appx[drag.k],dy=p.y-drag.p0.y,a0=drag.a0;
       if(drag.part==="body"){a.y=a0.y+dy;if(drag.k==="bilge")a.dx=Math.max(40,Math.min(300,Math.abs(a0.dx+(p.x>500?1:-1)*(p.x-drag.p0.x))))}
       else{var top=a0.y-a0.len/2,bot=a0.y+a0.len/2;if(drag.part==="top")top=Math.min(bot-40,top+dy);else bot=Math.max(top+40,bot+dy);a.y=(top+bot)/2;a.len=bot-top}
@@ -344,11 +421,11 @@ function bindDraw(j){
   });
   svg.addEventListener("pointerup",function(e){
     var d=drag;drag=null;if(!d)return;var p=svgPt(svg,e);
-    if(d.type==="fit"){if(d.moved){if(d.f.locAuto!==false){var l=autoLoc(j,d.f.x,d.f.y);d.f.location=l;d.f.locAuto=true}persist(j);redrawSvg(j)}else{S.fit=d.f.fid;S.confirmFit=false;renderSheet()}}
+    if(d.type==="fit"){if(d.moved)persist(j);else{S.fit=d.f.fid;S.confirmFit=false;renderSheet()}}
     else if(d.type==="ap"){if(d.moved)persist(j)}
     else if(d.type==="bg"&&!d.moved&&S.mode){
-      var kind=S.mode,fid=uid(),f={fid:fid,kind:kind,id:nextId(j,kind),x:Math.round(p.x),y:Math.round(p.y),locAuto:true};
-      f.location=autoLoc(j,f.x,f.y);j.fits[fid]=f;persist(j);S.mode="";S.fit=fid;S.confirmFit=false;render();
+      var kind=S.mode,fid=uid(),f={fid:fid,kind:kind,id:nextId(j,kind),x:Math.round(p.x),y:Math.round(p.y)};
+      j.fits[fid]=f;persist(j);S.mode="";S.fit=fid;S.confirmFit=false;render();
     }
   });
   svg.addEventListener("pointercancel",function(){drag=null});
@@ -365,32 +442,37 @@ function loadPhoto(j,file){
 function closeSheet(){var s=document.getElementById("sheet");if(s)s.remove();if(!(S.view==="job"&&S.tab==="draw"))document.body.style.overflow=""}
 function fieldHtml(fd,f){
   var v=f[fd.k]||"",isOther=v&&fd.o.indexOf(v)<0;
-  var h='<label class="f">'+fd.l+(fd.k==="location"&&f.locAuto&&v?' <span class="small">(from drawing)</span>':'')+'<select id="f_'+fd.k+'" data-k="'+fd.k+'"><option value="">—</option>';
+  var h='<label class="f">'+fd.l+'<select id="f_'+fd.k+'" data-k="'+fd.k+'"><option value="">—</option>';
   fd.o.forEach(function(o){h+='<option'+(o===v?" selected":"")+'>'+esc(o)+'</option>'});
-  h+='<option value="__other"'+(isOther?" selected":"")+'>Other…</option></select><input class="other" id="o_'+fd.k+'" data-o="'+fd.k+'" value="'+esc(isOther?v:"")+'"'+(isOther?"":" hidden")+' placeholder="Type '+fd.l.toLowerCase()+'"></label>';
+  h+='<option value="__other"'+(isOther?" selected":"")+'>Other…</option></select><input class="other" id="o_'+fd.k+'" data-o="'+fd.k+'" value="'+esc(isOther?v:"")+'"'+(isOther?"":" hidden")+' placeholder="Type '+fd.l.toLowerCase()+'" autocorrect="off"></label>';
   return h;
 }
 function renderSheet(){
   var j=cur(),f=j.fits[S.fit];if(!f)return;
   var old=document.getElementById("sheet"),st=(old&&old.dataset.fid===f.fid)?old.querySelector(".body").scrollTop:0;if(old)old.remove();
   var s=document.createElement("div");s.className="sheet";s.id="sheet";s.dataset.fid=f.fid;s.setAttribute("role","dialog");
-  var F=function(k){return FIELDS.filter(function(x){return x.k===k})[0]};
-  var h='<header class="bar"><span class="bigid">'+esc(f.id)+'</span><h1>Fitting '+esc(f.id)+'<small>'+esc(j.vessel)+'</small></h1><button class="btn primary" id="done">Done</button></header><div class="body"><div class="inner">';
-  h+='<div class="seg"><button data-kind="wl" class="'+(f.kind==="wl"?"on":"")+'">Within 250 mm of WL</button><button data-kind="bw" class="'+(f.kind==="bw"?"on":"")+'">Below WL</button></div>';
-  h+=fieldHtml(F("location"),f)+fieldHtml(F("compartment"),f)+fieldHtml(F("function"),f);
-  h+='<div class="row2">'+fieldHtml(F("skin"),f)+fieldHtml(F("skinMat"),f)+'</div>';
+  var F=function(k){return FIELDS.filter(function(x){return x.k===k})[0]},hw=hwl(j),ht=heeledText(j,f);
+  var h='<header class="bar"><span class="bigid" style="color:'+(complete(f)?"var(--ink)":"#c4120c")+'">'+esc(f.id)+'</span><h1>Fitting '+esc(f.id)+'<small>'+(complete(f)?"Complete":"Details still to fill in")+'</small></h1><button class="btn primary" id="done">Done</button></header><div class="body"><div class="inner">';
+  h+='<div class="seg"><button data-kind="wl" class="'+(f.kind==="wl"?"on":"")+'">Within '+j.inspect+' mm of WL</button><button data-kind="bw" class="'+(f.kind==="bw"?"on":"")+'">Below WL</button></div>';
+  if(f.kind==="wl")h+='<label class="f">Height above waterline (mm)<input id="f_h" type="number" inputmode="numeric" min="0" step="5" value="'+esc(f.h==null?"":f.h)+'"></label>'+
+    (hw!=null?'<div class="hwl" id="hwlnote">Heeled waterline '+hw+' mm'+(ht?': this fitting is <b>'+ht.toLowerCase()+'</b> it.':'.')+'</div>':'<div class="small">Enter the beam on the Table tab to check against the heeled waterline.</div>');
+  h+=fieldHtml(F("compartment"),f)+fieldHtml(F("function"),f)+fieldHtml(F("skin"),f);
   h+='<div class="row2">'+fieldHtml(F("valve"),f)+fieldHtml(F("valveMat"),f)+'</div>';
   h+='<div class="row2">'+fieldHtml(F("hose"),f)+fieldHtml(F("clamps"),f)+'</div>';
   h+=fieldHtml(F("comment"),f);
-  h+='<label class="f">Note (added to comment)<textarea id="f_note" data-k="note">'+esc(f.note||"")+'</textarea></label>';
+  h+='<label class="f">Note (added to comment)<textarea id="f_note" data-k="note" autocorrect="on">'+esc(f.note||"")+'</textarea></label>';
   h+=S.confirmFit?'<div class="confirm"><span>Delete fitting '+esc(f.id)+'?</span><button class="btn primary" id="delyes">Delete</button><button class="btn" id="delno">Keep</button></div>':'<button class="btn ghost" id="del" style="align-self:flex-start">Delete fitting '+esc(f.id)+'</button>';
   h+='</div></div>';
   s.innerHTML=h;document.body.appendChild(s);s.querySelector(".body").scrollTop=st;document.body.style.overflow="hidden";
-  function setv(k,v){if(v)f[k]=v;else delete f[k];if(k==="location")f.locAuto=false;persist(j)}
+  function setv(k,v){if(v)f[k]=v;else delete f[k];persist(j);refreshHead()}
+  function refreshHead(){var c=complete(f),b=s.querySelector(".bigid"),sm=s.querySelector(".bar h1 small");b.style.color=c?"var(--ink)":"#c4120c";sm.textContent=c?"Complete":"Details still to fill in"}
   s.querySelectorAll("select[data-k]").forEach(function(sel){sel.onchange=function(){var k=sel.dataset.k,o=s.querySelector('[data-o="'+k+'"]');
-    if(sel.value==="__other"){o.hidden=false;o.focus();setv(k,o.value.trim())}else{o.hidden=true;o.value="";setv(k,sel.value)}}});
+    if(sel.value==="__other"){o.hidden=false;o.focus();setv(k,o.value.trim())}else{o.hidden=true;o.value="";setv(k,sel.value);
+      if(k==="valve"&&sel.value==="n/a"&&!f.valveMat){f.valveMat="n/a";persist(j);renderSheet()}}}});
   s.querySelectorAll("input[data-o]").forEach(function(i){i.oninput=function(){setv(i.dataset.o,i.value.trim())}});
   s.querySelector("#f_note").oninput=function(e){setv("note",e.target.value.trim())};
+  var fh=s.querySelector("#f_h");if(fh)fh.oninput=function(){var v=fh.value.trim();if(v==="")delete f.h;else f.h=Math.round(+v);persist(j);refreshHead();
+    var n=s.querySelector("#hwlnote");if(n&&hw!=null){var t=heeledText(j,f);n.innerHTML='Heeled waterline '+hw+' mm'+(t?': this fitting is <b>'+t.toLowerCase()+'</b> it.':'.')}};
   s.querySelectorAll("[data-kind]").forEach(function(b){b.onclick=function(){if(f.kind===b.dataset.kind)return;f.kind=b.dataset.kind;f.id=nextId(j,f.kind,f.fid);persist(j);renderSheet()}});
   s.querySelector("#done").onclick=function(){var a=document.activeElement;if(a&&a.blur)a.blur();S.fit=null;render()};
   var d=s.querySelector("#del");if(d)d.onclick=function(){S.confirmFit=true;renderSheet()};
@@ -400,110 +482,170 @@ function renderSheet(){
 
 /* ---- table tab ---- */
 function tableHtml(j){
-  var all=fits(j).sort(siteSort),o=order(j),same=all.every(function(f){return o.m[f.fid]===f.id});
-  var h='<main>';
-  if(!all.length)return h+'<p class="empty">No fittings yet. Use the Drawing tab to place them.</p></main>';
-  [["wl","Within 250 mm of waterline"],["bw","Below waterline"]].forEach(function(g){
+  var all=sortedFits(j),ok=inOrder(j);
+  var h='<main><section class="panel"><b>Vessel</b><div class="row2"><label class="f">Vessel<input id="jv" value="'+esc(j.vessel)+'" autocapitalize="words"></label><label class="f">Survey date<input id="jd" type="date" value="'+esc(j.date)+'"></label></div>'+beamFields(j,"j")+
+    '<label class="f">Inspection height (mm above waterline)<input id="ji" type="number" inputmode="numeric" step="10" min="50" value="'+esc(j.inspect)+'"></label><div class="hwl" id="jline">'+esc(heelLine(j))+'</div></section>';
+  if(!all.length)h+='<p class="empty">No fittings yet. Use the Drawing tab to place them.</p>';
+  [["wl","Within "+j.inspect+" mm of waterline"],["bw","Below waterline"]].forEach(function(g){
     var list=all.filter(function(f){return f.kind===g[0]});if(!list.length)return;
     h+='<section><h2>'+g[1]+' · '+list.length+'</h2><div class="list">';
     list.forEach(function(f){
-      var l2=[f["function"],withMat(f.skin,f.skinMat)&&("Skin fitting: "+withMat(f.skin,f.skinMat)),withMat(f.valve,f.valveMat)&&("Valve: "+withMat(f.valve,f.valveMat)),f.hose,f.clamps&&(f.clamps+" clamps"),comment(f)].filter(Boolean).join(" · ");
-      h+='<button class="fit" data-f="'+f.fid+'"><span class="id'+(f.kind==="bw"?" bw":"")+'">'+esc(f.id)+'</span><span class="d"><b>'+esc([f.location,f.compartment].filter(Boolean).join(" · ")||"Location not set")+'</b><span>'+esc(l2||"No details yet")+'</span></span>'+(o.m[f.fid]!==f.id?'<span class="site">Report: '+o.m[f.fid]+'</span>':'')+'</button>'});
+      var l2=[wlText(f),heeledText(j,f)&&("heeled WL: "+heeledText(j,f).toLowerCase()),f.skin,f.valve&&f.valve!=="n/a"&&(f.valve+(f.valveMat?" ("+f.valveMat+")":"")),f.hose,f.clamps&&f.clamps!=="n/a"&&(f.clamps+" clamps"),comment(f)].filter(Boolean).join(" · ");
+      h+='<button class="fit" data-f="'+f.fid+'"><span class="id'+(f.kind==="bw"?" bw":"")+(complete(f)?"":" red")+'">'+esc(f.id)+'</span><span class="d"><b>'+esc([f.compartment,f["function"]].filter(Boolean).join(" · ")||"No details yet")+'</b><span>'+esc(l2)+'</span></span></button>'});
     h+='</div></section>'});
-  h+='<section class="panel"><b>Renumber for the report</b><span class="small">Orders each series port side bow to stern, then centreline, then starboard side bow to stern. The output always uses this order; renumbering also changes the IDs here and on the drawing.</span>';
-  if(same)h+='<span class="msg">Already in report order.</span>';
-  else h+=S.renumConfirm?'<div class="confirm"><span>Change the IDs to report order?</span><button class="btn primary" id="renyes">Renumber</button><button class="btn" id="renno">Cancel</button></div>':'<button class="btn" id="ren">Renumber now</button>';
-  h+='</section>';
+  if(all.length)h+='<section class="panel"><b>Renumber</b><span class="small">Lettered fittings: port side bow to stern, then starboard bow to stern, then across the transom. Numbered fittings: bow to stern. The new IDs replace the old ones.</span>'+
+    (ok?'<span class="msg">Already in order.</span>':'<button class="btn" id="ren">Renumber now</button>')+'</section>';
   h+=S.confirmDel?'<div class="confirm"><span>Delete this job from the phone? Files on Drive are kept.</span><button class="btn primary" id="jdelyes">Delete</button><button class="btn" id="jdelno">Keep</button></div>':'<button class="btn ghost" id="jdel" style="align-self:flex-start">Delete job</button>';
   return h+'</main>';
 }
 function bindTable(j){
+  function upd(){j.vessel=document.getElementById("jv").value.trim()||j.vessel;j.date=document.getElementById("jd").value||j.date;readBeam("j",j);
+    var i=+document.getElementById("ji").value;if(i>=50)j.inspect=Math.round(i);persist(j);document.getElementById("jline").textContent=heelLine(j)}
+  ["jv","jd","ji"].forEach(function(id){document.getElementById(id).onchange=function(){upd();render()}});
+  bindBeam("j",function(){upd();render()});
   app.querySelectorAll("[data-f]").forEach(function(b){b.onclick=function(){S.fit=b.dataset.f;S.confirmFit=false;renderSheet()}});
-  var r=document.getElementById("ren");if(r)r.onclick=function(){S.renumConfirm=true;render()};
-  var ry=document.getElementById("renyes");if(ry)ry.onclick=function(){var o=order(j);fits(j).forEach(function(f){f.id=o.m[f.fid]});persist(j);S.renumConfirm=false;render()};
-  var rn=document.getElementById("renno");if(rn)rn.onclick=function(){S.renumConfirm=false;render()};
+  var r=document.getElementById("ren");if(r)r.onclick=function(){renumber(j);render()};
   var jd=document.getElementById("jdel");if(jd)jd.onclick=function(){S.confirmDel=true;render()};
   var jy=document.getElementById("jdelyes");if(jy)jy.onclick=function(){var id=j.id;clearTimeout(saveTimers[id]);delete saveTimers[id];delete S.jobs[id];delete S.imgs[id];
     idb("jobs","readwrite",function(s){return s.delete(id)});idb("img","readwrite",function(s){return s.delete(id)});S.view="home";S.job=null;S.confirmDel=false;render()};
   var jn=document.getElementById("jdelno");if(jn)jn.onclick=function(){S.confirmDel=false;render()};
 }
 
-/* ---- output ---- */
-function reportRows(list,m){return list.map(function(f){return[m[f.fid],f.location||"",f.compartment||"",f["function"]||"",withMat(f.skin,f.skinMat),withMat(f.valve,f.valveMat),f.hose||"",f.clamps||"",comment(f)]})}
-function sheetRows(j,o){
-  var rows=[["Vessel",j.vessel],["Survey date",ukDate(j.date)],["Hull form",HULLS[j.hull].name],[],
-    ["Through Hulls ID","Report ID","Location","Compartment","Waterline","Function","Skin fitting","Skin fitting Material","Valve","Valve Material","Hose","Clamps","Comment"]];
-  o.L.concat(o.N).forEach(function(f){rows.push([f.id,o.m[f.fid],f.location,f.compartment,WL_TEXT[f.kind],f["function"],f.skin,f.skinMat,f.valve,f.valveMat,f.hose,f.clamps,comment(f)])});
-  return rows.map(function(r){var a=[];for(var i=0;i<13;i++)a.push(r[i]==null?"":String(r[i]));return a});
+/* ================= output ================= */
+function rangeText(list){if(!list.length)return"";if(list.length===1)return list[0].id;return list[0].id+"–"+list[list.length-1].id}
+function sketchSvg(j){
+  /* A4 portrait page, 1240 x 1860 units (drawn at 2x for the PNG) */
+  var g=hullGeo(j.hull),s=1480/(g.bot-g.top+130),ox=(1240-1000*s)/2,oy=60-(g.top-60)*s;
+  var body='<g transform="translate('+ox+','+oy+') scale('+s+')">'+frameSvg(j)+appxSvg(j,false)+markersSvg(j,R0,FS0+2,false,false)+'</g>';
+  var all=sortedFits(j),W=all.filter(function(f){return f.kind==="wl"}),B=all.filter(function(f){return f.kind==="bw"});
+  var KF=GILL,ky=1690,key='<text x="70" y="'+ky+'" '+KF+' font-size="20" letter-spacing="3" fill="#777">KEY</text>',row=0;
+  function line(sym,ids,txt){var y=ky+row*40;row++;key+=sym(y)+'<text x="190" y="'+y+'" '+KF+' font-size="25" font-weight="700">'+esc(ids)+'</text><text x="272" y="'+y+'" '+KF+' font-size="25">'+esc(txt)+'</text>'}
+  var circ=function(y){return'<circle cx="168" cy="'+(y-8)+'" r="8" fill="#fff" stroke="#000" stroke-width="4"/>'};
+  if(W.length)line(circ,rangeText(W),"Through-hull apertures within "+j.inspect+" mm of waterline ("+W.length+")");
+  if(B.length)line(circ,rangeText(B),"Through-hull apertures below waterline ("+B.length+")");
+  if(APPX_ORDER.some(function(k){return j.appx[k]&&j.appx[k].on}))line(function(y){return'<path d="M150,'+(y-8)+'h36" stroke="#6b6560" stroke-width="3" stroke-dasharray="12 8"/>'},"","Keel / skeg (below hull)");
+  key+='<text x="272" y="'+(ky+row*40)+'" '+KF+' font-size="22" font-style="italic" fill="#555">Not to scale</text>';
+  var fy=1845,foot='<line x1="70" y1="'+(fy-48)+'" x2="1170" y2="'+(fy-48)+'" stroke="#999" stroke-width="2"/>'+
+    '<text x="70" y="'+fy+'" '+KF+' font-size="30" font-weight="700">Sketch of Through-Hull Apertures</text>'+
+    '<text x="1170" y="'+fy+'" text-anchor="end" '+KF+' font-size="30"><tspan font-weight="700" font-style="italic">'+esc(j.vessel)+'</tspan><tspan dx="30">'+esc(longDate(j.date))+'</tspan></text>';
+  return{s:s,ox:ox,oy:oy,svg:'<svg xmlns="http://www.w3.org/2000/svg" width="2480" height="3720" viewBox="0 0 1240 1860">'+body+key+foot+'</svg>'};
 }
-function exportSvg(j,o){
-  /* A4 portrait at 150 dpi: 1240 x 1754 */
-  var W=1240,H=1754,s=1350/1500,ox=(W-1000*s)/2,oy=70;
-  var g='<g transform="translate('+ox+','+oy+') scale('+s+')">'+frameSvg(j)+appxSvg(j,false);
-  o.L.concat(o.N).forEach(function(f){g+=markerSvg(f,o.m[f.fid],1)});g+='</g>';
-  var F='font-family="Gill Sans,Gill Sans MT,Calibri,sans-serif"',ky=oy+1500*s+40;
-  var key='<text x="110" y="'+ky+'" '+F+' font-size="17" letter-spacing="3" fill="#8a8580">KEY</text>';
-  [["wl","A"],["bw","1"]].forEach(function(k,i){var y=ky+i*34;
-    key+='<path d="M'+(190)+','+(y-15)+'l16,16m0,-16l-16,16" stroke="'+(k[0]==="wl"?"#990000":"#22201b")+'" stroke-width="3.5" stroke-linecap="round"/><text x="214" y="'+y+'" '+F+' font-size="22" font-weight="700" fill="'+(k[0]==="wl"?"#990000":"#22201b")+'">'+k[1]+'</text><text x="250" y="'+y+'" '+F+' font-size="21" fill="#22201b">'+KEY_TEXT[k[0]]+'</text>'});
-  var anyAp=APPX_ORDER.some(function(k){return j.appx[k]&&j.appx[k].on});
-  if(anyAp)key+='<path d="M180,'+(ky+58)+'h40" stroke="#6b6560" stroke-width="3" stroke-dasharray="12 8"/><text x="250" y="'+(ky+66)+'" '+F+' font-size="21" fill="#22201b">Keel / skeg (below hull)</text>';
-  key+='<text x="250" y="'+(ky+(anyAp?100:66))+'" '+F+' font-size="19" font-style="italic" fill="#8a8580">Not to scale</text>';
-  var foot='<line x1="110" y1="'+(H-90)+'" x2="'+(W-110)+'" y2="'+(H-90)+'" stroke="#d8d4cc" stroke-width="2"/><text x="110" y="'+(H-50)+'" '+F+' font-size="24" font-weight="700" fill="#22201b">Sketch of Through-Hull Apertures</text>'+
-    '<text x="'+(W-110)+'" y="'+(H-50)+'" text-anchor="end" '+F+' font-size="24" fill="#22201b"><tspan font-weight="700" font-style="italic">'+esc(j.vessel)+'</tspan><tspan fill="#8a8580" dx="18">'+ukDate(j.date)+'</tspan></text>';
-  return {W:W,H:H,s:s,ox:ox,oy:oy,svg:'<svg xmlns="http://www.w3.org/2000/svg" width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'">'+g+key+foot+'</svg>'};
-}
-function exportPng(j){
-  var o=order(j),e=exportSvg(j,o);
+function sketchPng(j){
+  var e=sketchSvg(j);
   return new Promise(function(res,rej){
-    var c=document.createElement("canvas");c.width=e.W;c.height=e.H;var x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,e.W,e.H);
-    function overlay(){var im=new Image();im.onload=function(){x.drawImage(im,0,0);c.toBlob(function(b){b?res(b):rej(new Error("png"))},"image/png")};im.onerror=function(){rej(new Error("svg"))};
+    var c=document.createElement("canvas");c.width=2480;c.height=3720;var x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,2480,3720);
+    function overlay(){var im=new Image();im.onload=function(){x.drawImage(im,0,0,2480,3720);c.toBlob(function(b){b?res(b):rej(new Error("png"))},"image/png")};im.onerror=function(){rej(new Error("svg"))};
       im.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(e.svg)}
     var bg=j.hull==="sketch"&&S.imgs[j.id];
-    if(bg){var bi=new Image();bi.onload=function(){var fw=1000*e.s,fh=1500*e.s,r=Math.min(fw/bi.width,fh/bi.height),w=bi.width*r,h=bi.height*r;
-      x.globalAlpha=.85;x.drawImage(bi,e.ox+(fw-w)/2,e.oy+(fh-h)/2,w,h);x.globalAlpha=1;overlay()};bi.onerror=overlay;bi.src=bg}else overlay();
+    if(bg){var bi=new Image();bi.onload=function(){var k=2,fw=1000*e.s*k,fh=1500*e.s*k,r=Math.min(fw/bi.width,fh/bi.height),w=bi.width*r,h=bi.height*r;
+      x.globalAlpha=.85;x.drawImage(bi,e.ox*k+(fw-w)/2,e.oy*k+(fh-h)/2,w,h);x.globalAlpha=1;overlay()};bi.onerror=overlay;bi.src=bg}else overlay();
   });
 }
+function tableRows(j){return sortedFits(j).map(function(f){return{id:f.id,comp:f.compartment||"",wl:wlText(f),hwl:heeledText(j,f),fn:f["function"]||"",skin:f.skin||"",valve:f.valve||"",vmat:f.valveMat||"",hose:f.hose||"",clamps:f.clamps||"",comment:comment(f)}})}
+function sheetRows(j){
+  var rows=[["Vessel",j.vessel],["Survey date",ukDate(j.date)],["Hull form",HULLS[j.hull].name],["Vessel type",j.vtype==="sail"?"Sailing boat":"Motorboat"],["Beam",beamText(j)],["Heeled waterline",hwl(j)!=null?hwl(j)+" mm ("+heel(j)+"° heel)":""],["Inspection height",j.inspect+" mm"],[],
+    ["ID","Compartment","Waterline","Heeled WL","Function","Skin fitting","Valve","Valve Material","Hose","Clamps","Comment"]];
+  tableRows(j).forEach(function(r){rows.push([r.id,r.comp,r.wl,r.hwl,r.fn,r.skin,r.valve,r.vmat,r.hose,r.clamps,r.comment])});
+  return rows.map(function(r){var a=[];for(var i=0;i<11;i++)a.push(r[i]==null?"":String(r[i]));return a});
+}
+/* ---- Word file, built on the phone (no network needed) ---- */
+function xe(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
+function wrun(t,font,size,bold){return'<w:r><w:rPr><w:rFonts w:ascii="'+font+'" w:hAnsi="'+font+'" w:cs="'+font+'"/>'+(bold?"<w:b/>":"")+'<w:sz w:val="'+size*2+'"/><w:szCs w:val="'+size*2+'"/></w:rPr><w:t xml:space="preserve">'+xe(t)+'</w:t></w:r>'}
+function wpara(runs,opts){opts=opts||{};return'<w:p><w:pPr><w:spacing w:before="'+(opts.before||0)+'" w:after="'+(opts.after==null?0:opts.after)+'"/>'+(opts.jc?'<w:jc w:val="'+opts.jc+'"/>':"")+(opts.sect||"")+'</w:pPr>'+runs+'</w:p>'}
+function buildDocx(j,png){
+  var HEAD=["ID","Compartment","Waterline","Heeled WL","Function","Skin fitting","Valve","Valve Material","Hose","Clamps","Comment"],
+      KEYS=["id","comp","wl","hwl","fn","skin","valve","vmat","hose","clamps","comment"],
+      MM=[9,35,20,17,27,25,14,20,20,17,63],TW=MM.map(function(m){return Math.round(m*56.7)}),TNR="Times New Roman",AN="Arial Narrow";
+  var bd='<w:tblBorders>'+["top","left","bottom","right","insideH","insideV"].map(function(s){return'<w:'+s+' w:val="single" w:sz="4" w:space="0" w:color="000000"/>'}).join("")+'</w:tblBorders>';
+  var tbl='<w:tbl><w:tblPr><w:tblW w:w="'+TW.reduce(function(a,b){return a+b},0)+'" w:type="dxa"/><w:jc w:val="center"/>'+bd+'<w:tblLayout w:type="fixed"/><w:tblCellMar><w:left w:w="70" w:type="dxa"/><w:right w:w="70" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid>'+TW.map(function(w){return'<w:gridCol w:w="'+w+'"/>'}).join("")+'</w:tblGrid>';
+  function cell(i,content,head,center){return'<w:tc><w:tcPr><w:tcW w:w="'+TW[i]+'" w:type="dxa"/>'+(head?'<w:shd w:val="clear" w:color="auto" w:fill="D9D9D9"/>':"")+'</w:tcPr>'+wpara(content,{jc:center?"center":null})+'</w:tc>'}
+  tbl+='<w:tr><w:trPr><w:tblHeader/></w:trPr>'+HEAD.map(function(h,i){return cell(i,wrun(h,TNR,10,true),true)}).join("")+'</w:tr>';
+  tableRows(j).forEach(function(r){
+    tbl+='<w:tr><w:trPr><w:cantSplit/></w:trPr>'+KEYS.map(function(k,i){var v=r[k],c;
+      if(k==="comment"&&/action needed/i.test(v)){var pre=v.replace(/\s*–?\s*action needed\s*–?\s*/i," ").trim();c=(pre?wrun(pre+" – ",TNR,10):"")+wrun("Action needed",TNR,10,true)}
+      else c=wrun(v,TNR,10);
+      return cell(i,c,false,k==="id")}).join("")+'</w:tr>'});
+  tbl+='</w:tbl>';
+  var land='<w:sectPr><w:pgSz w:w="16838" w:h="11906" w:orient="landscape"/><w:pgMar w:top="1020" w:right="850" w:bottom="850" w:left="850" w:header="0" w:footer="0" w:gutter="0"/></w:sectPr>';
+  var port='<w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="567" w:right="850" w:bottom="567" w:left="850" w:header="0" w:footer="0" w:gutter="0"/></w:sectPr>';
+  var cx=6528000,cy=9792000;
+  var pic='<w:r><w:drawing><wp:inline distT="0" distB="0" distL="0" distR="0"><wp:extent cx="'+cx+'" cy="'+cy+'"/><wp:docPr id="1" name="Sketch"/><a:graphic><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:pic><pic:nvPicPr><pic:cNvPr id="1" name="sketch.png"/><pic:cNvPicPr/></pic:nvPicPr><pic:blipFill><a:blip r:embed="rIdImg"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="'+cx+'" cy="'+cy+'"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></pic:spPr></pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing></w:r>';
+  var doc='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"><w:body>'+
+    wpara(wrun("Appendix B :  Through Hull Apertures",AN,14,true),{after:80})+
+    wpara(wrun(heelLine(j),AN,11),{after:160})+tbl+
+    wpara(wrun("See sketch of through hull apertures on next page",AN,11),{before:280,sect:land})+
+    wpara(pic,{jc:"center"})+port+'</w:body></w:document>';
+  var files=[
+    ["[Content_Types].xml",'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Default Extension="png" ContentType="image/png"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>'],
+    ["_rels/.rels",'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>'],
+    ["word/_rels/document.xml.rels",'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rIdImg" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="media/sketch.png"/></Relationships>'],
+    ["word/document.xml",doc],["word/media/sketch.png",png]];
+  return zip(files,"application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+}
+var CRC=(function(){var t=[];for(var n=0;n<256;n++){var c=n;for(var k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}return t})();
+function crc32(b){var c=0xFFFFFFFF;for(var i=0;i<b.length;i++)c=CRC[(c^b[i])&255]^(c>>>8);return(c^0xFFFFFFFF)>>>0}
+function zip(files,type){ /* stored (uncompressed) zip: enough for Word */
+  var enc=new TextEncoder(),parts=[],central=[],off=0;
+  files.forEach(function(f){
+    var name=enc.encode(f[0]),data=typeof f[1]==="string"?enc.encode(f[1]):f[1],crc=crc32(data);
+    var h=new DataView(new ArrayBuffer(30));h.setUint32(0,0x04034b50,true);h.setUint16(4,20,true);h.setUint16(6,0x0800,true);h.setUint16(8,0,true);h.setUint32(14,crc,true);h.setUint32(18,data.length,true);h.setUint32(22,data.length,true);h.setUint16(26,name.length,true);
+    parts.push(h.buffer,name,data);
+    var c=new DataView(new ArrayBuffer(46));c.setUint32(0,0x02014b50,true);c.setUint16(4,20,true);c.setUint16(6,20,true);c.setUint16(8,0x0800,true);c.setUint32(16,crc,true);c.setUint32(20,data.length,true);c.setUint32(24,data.length,true);c.setUint16(28,name.length,true);c.setUint32(42,off,true);
+    central.push(c.buffer,name);off+=30+name.length+data.length;
+  });
+  var csize=central.reduce(function(a,p){return a+(p.byteLength||p.length)},0),e=new DataView(new ArrayBuffer(22));
+  e.setUint32(0,0x06054b50,true);e.setUint16(8,files.length,true);e.setUint16(10,files.length,true);e.setUint32(12,csize,true);e.setUint32(16,off,true);
+  return new Blob(parts.concat(central,[e.buffer]),{type:type});
+}
+function makeOutputs(j){return sketchPng(j).then(function(pngBlob){return pngBlob.arrayBuffer().then(function(ab){return{png:pngBlob,docx:buildDocx(j,new Uint8Array(ab))}})})}
 function blobB64(b){return new Promise(function(res){var r=new FileReader();r.onload=function(){res(String(r.result).split(",")[1])};r.readAsDataURL(b)})}
+function shareFile(blob,name,type){var file=new File([blob],name,{type:type});
+  if(navigator.canShare&&navigator.canShare({files:[file]}))return navigator.share({files:[file]}).catch(function(){});
+  var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove()}
 function outHtml(j){
-  var c=cfg(),n=fits(j).length;
-  var h='<main><section><h2>Report drawing</h2>'+(S.previewUrl?'<img class="preview" id="pv" src="'+S.previewUrl+'" alt="Through-hull drawing for '+esc(j.vessel)+'">':'<p class="empty">Preparing preview…</p>')+'</section>';
-  h+='<section class="panel"><b>Save to Google Drive</b><span class="small">Creates a folder “'+esc(j.vessel+" "+j.date)+'” in Surveying › Thro Hulls holding the drawing (PNG), a Word file with the drawing and both tables, and the full table as a Google Sheet. Files you have edited on Drive are never overwritten; a new copy is made instead.</span>';
+  var c=cfg(),n=fits(j).length,inc=fits(j).filter(function(f){return!complete(f)}).length,ord=inOrder(j);
+  var h='<main>';
+  if(n&&!ord)h+='<section class="panel"><b>Not in report order</b><span class="small">Renumber before saving so the drawing and table run in order.</span><button class="btn" id="ren">Renumber now</button></section>';
+  if(inc)h+='<p class="msg err">'+inc+' fitting'+(inc>1?"s are":" is")+' still red: details missing.</p>';
+  h+='<section><h2>Sketch</h2>'+(S.previewUrl?'<img class="preview" id="pv" src="'+S.previewUrl+'" alt="Through-hull sketch for '+esc(j.vessel)+'">':'<p class="empty">Preparing preview…</p>')+'</section>';
+  h+='<section class="panel"><b>Save to Google Drive</b><span class="small">Saves to Surveying › Thro Hulls › “'+esc(j.vessel+" "+j.date)+'”: the Word file (table on a landscape page, sketch on a portrait page), the sketch as a PNG, and the table as a Google Sheet. Files you have edited on Drive are never overwritten; a new copy is made instead.</span>';
   if(!c.url)h+='<span class="msg err">Add the Apps Script URL and key in Settings first.</span>';
   h+='<button class="btn primary" id="drive"'+(S.busy||!c.url||!n?" disabled":"")+'>'+(S.busy?"Saving…":"Save to Drive")+'</button><p class="msg'+(S.msgErr?" err":"")+'" id="toast">'+(S.msg?esc(S.msg):dirty(j)?(j.savedAt?"Changed since last save.":"Not yet saved to Drive."):"Saved to Drive "+new Date(j.savedAt).toLocaleString("en-GB",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})+".")+(j.folderUrl?' <a href="'+esc(j.folderUrl)+'" target="_blank" rel="noopener">Open folder</a>':'')+'</p></section>';
-  h+='<section class="panel"><b>Share drawing</b><span class="small">Sends the PNG to another app (Mail, Files, OneDrive). Works without signal for saving to Files.</span><button class="btn" id="share"'+(n?"":" disabled")+'>Share drawing</button></section></main>';
+  h+='<section class="panel"><b>Share without signal</b><span class="small">Sends the file to another app, such as Files, Mail or OneDrive.</span><div style="display:flex;gap:10px"><button class="btn" id="sharedoc" style="flex:1"'+(n?"":" disabled")+'>Word file</button><button class="btn" id="sharepng" style="flex:1"'+(n?"":" disabled")+'>Sketch PNG</button></div></section></main>';
   return h;
 }
 function bindOut(j){
-  if(!S.previewUrl)exportPng(j).then(function(b){S.previewUrl=URL.createObjectURL(b);if(S.tab==="out"&&S.view==="job")render()}).catch(function(){});
+  if(!S.previewUrl)sketchPng(j).then(function(b){S.previewUrl=URL.createObjectURL(b);if(S.tab==="out"&&S.view==="job")render()}).catch(function(){});
+  var r=document.getElementById("ren");if(r)r.onclick=function(){renumber(j);if(S.previewUrl){URL.revokeObjectURL(S.previewUrl);S.previewUrl=""}render()};
   var d=document.getElementById("drive");if(d)d.onclick=function(){saveDrive(j)};
-  var s=document.getElementById("share");if(s)s.onclick=function(){exportPng(j).then(function(b){var name=baseName(j)+".png",file=new File([b],name,{type:"image/png"});
-    if(navigator.canShare&&navigator.canShare({files:[file]}))navigator.share({files:[file]}).catch(function(){});
-    else{var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();a.remove()}})};
+  document.getElementById("sharedoc").onclick=function(){makeOutputs(j).then(function(o){shareFile(o.docx,baseName(j)+".docx",o.docx.type)})};
+  document.getElementById("sharepng").onclick=function(){sketchPng(j).then(function(b){shareFile(b,baseName(j)+".png","image/png")})};
 }
 function saveDrive(j){
   var c=cfg();if(!c.url||S.busy)return;S.busy=true;S.msg="Saving to Drive…";S.msgErr=false;render();
-  var stamp=j.updatedAt,o=order(j);
-  exportPng(j).then(blobB64).then(function(b64){
-    var body={key:c.key,vessel:j.vessel,date:j.date,dateUk:ukDate(j.date),hull:HULLS[j.hull].name,sheet:sheetRows(j,o),wl:reportRows(o.L,o.m),below:reportRows(o.N,o.m),png:b64,
-      hasAppx:APPX_ORDER.some(function(k){return j.appx[k]&&j.appx[k].on})};
-    return fetch(c.url,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(body)});
+  var stamp=j.updatedAt;
+  makeOutputs(j).then(function(o){return Promise.all([blobB64(o.png),blobB64(o.docx)])}).then(function(b){
+    return fetch(c.url,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({key:c.key,vessel:j.vessel,date:j.date,sheet:sheetRows(j),png:b[0],docx:b[1]})});
   }).then(function(r){return r.json()}).then(function(d){
     S.busy=false;
     if(!d.ok){S.msg="Drive refused the save: "+(d.error||"unknown error");S.msgErr=true;render();return}
     j.savedAt=Math.max(stamp,Date.now());j.updatedAt=stamp;j.folderUrl=d.folderUrl;flush(j.id);
     var kept=(d.files||[]).filter(function(f){return f.status==="copy"});
     S.msg="Saved to Drive."+(kept.length?" You had edited "+kept.map(function(f){return f.was}).join(" and ")+" on Drive, so "+(kept.length>1?"new copies were":"a new copy was")+" saved beside "+(kept.length>1?"them":"it")+".":"");S.msgErr=false;render();
-  }).catch(function(){S.busy=false;S.msg="Couldn't reach Drive. Nothing is lost; try again when you have signal.";S.msgErr=true;render()});
+  }).catch(function(){S.busy=false;S.msg="Couldn't reach Drive. Nothing is lost; try again when you have signal, or share the Word file instead.";S.msgErr=true;render()});
 }
 
-/* ---------------- start ---------------- */
+var NOTES="<h3>Heeled waterline (ISO 9093)</h3>\n<p>The heeled waterline is the loaded waterline with the vessel heeled to:</p>\n<ul><li>7\u00b0 for motorboats and multihulls;</li><li>30\u00b0 for sailing monohulls and motorsailers, or the angle at which the sheer amidships is immersed if that is lower.</li></ul>\n<p>The app takes the height of the heeled waterline at the hull side as half the beam \u00d7 tan(heel angle), rounded to the nearest 5 mm. That is about 0.06 \u00d7 beam for a motorboat and 0.29 \u00d7 beam for a sailing boat. It ignores flare, sinkage and trim, and uses the overall beam, so it slightly overstates the height.</p>\n<h3>Requirements by height</h3>\n<ul>\n<li><b>Below the heeled waterline:</b> a seacock, permanently attached and readily accessible, with double-clamped hose connections.</li>\n<li><b>Above the heeled waterline but below the required downflooding height</b> (fittings connected to an open system such as a sink, cockpit drain or bilge outlet): the pipework must stay watertight up to the required height, for example a hose looped up inside the hull. ISO 9093 does not require a seacock or double clamps here. Not confirmed: whether a seacock alone satisfies ISO 12217.</li>\n<li><b>Above both:</b> no specific requirement.</li>\n</ul>\n<p><b>Older guidance (superseded):</b> ISO 9093-1 is reported to have required double hose clamps where the fitting's centreline was less than 300 mm above the static loaded waterline on sailing boats, or 150 mm on motorboats. Not verified against the standard.</p>\n<h3>Downflooding height (ISO 12217)</h3>\n<p>Measured from the calm, fully loaded waterline to the lowest point where water can enter the interior. The required height depends on hull length, beam, displacement and design category. For small hull-side openings the category minimum normally governs.</p>\n<table><tr><th>Category</th><th>Conditions</th><th>Min</th><th>Max</th></tr>\n<tr><td>B Offshore</td><td>Up to Beaufort 8; waves up to 4 m</td><td>400 mm</td><td>1,410 mm</td></tr>\n<tr><td>C Inshore</td><td>Up to Beaufort 6; waves up to 2 m</td><td>300 mm</td><td>750 mm</td></tr>\n<tr><td>D Sheltered</td><td>Up to Beaufort 4; waves up to 0.3 m</td><td>200 mm</td><td>400 mm</td></tr></table>\n<p>Category A (Ocean): minimum 500 mm.</p>\n<h3>Inland boats</h3>\n<p>Boat Safety Scheme, non-private boats (standards 10.3 and 10.4): hull openings at least 250 mm above the normal laden waterline, or permanently connected to watertight pipes or ducts rising to that height; a readily accessible valve on any opening below the waterline. Advisory for private boats.</p>\n<h3>Inspection height</h3>\n<p>Set for each job on the Table tab; the default is 400 mm, the Category B minimum. Apertures within that height are lettered and assessed; apertures below the waterline are numbered.</p>\n<h3>How reliable these notes are</h3>\n<p>Checked against source documents: the 7\u00b0 and 30\u00b0 heel angles (ISO 9093) and the 250 mm Boat Safety Scheme figure. Not checked, taken from an AI summary: the ISO 12217 minimum and maximum heights and the older ISO 9093-1 clamp heights.</p>\n";
+
+/* ================= start ================= */
 dbAll().then(function(list){
-  list.forEach(function(j){S.jobs[j.id]=j});
+  list.forEach(function(j){S.jobs[j.id]=migrate(j)});
   var u=ls("ui");if(u&&u.job&&S.jobs[u.job]){open(u.job,u.tab||"draw")}else render();
 });
 var _r=render;render=function(){if(S.view!=="job"||S.tab!=="out"){if(S.previewUrl){URL.revokeObjectURL(S.previewUrl);S.previewUrl=""}}_r()};
 window.addEventListener("resize",function(){if(S.view==="job"&&S.tab==="draw")redrawSvg(cur())});
 if("serviceWorker" in navigator&&location.protocol==="https:")navigator.serviceWorker.register("sw.js").catch(function(){});
+window.__TH__={S:S,buildDocx:buildDocx,makeOutputs:makeOutputs,renumber:renumber,migrate:migrate};
 })();
 </script>
 </body>
