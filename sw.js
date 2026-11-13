@@ -1,6 +1,6 @@
 // Thro Hulls offline cache. Network first, so updates arrive when there is signal;
 // falls back to the cached copy on site with no signal.
-var CACHE = "throhulls-v1";
+var CACHE = "throhulls-v3";
 var FILES = ["./", "index.html", "manifest.webmanifest", "icon-180.png", "icon-512.png"];
 self.addEventListener("install", function (e) {
   e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(FILES); }).then(function () { return self.skipWaiting(); }));
